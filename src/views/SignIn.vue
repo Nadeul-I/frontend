@@ -15,7 +15,7 @@
             <div class="find" id="find">비밀번호를 잊으셨나요?</div>
             <div class="input">
                 <input type="submit" id="login" value="로그인" />
-                <input type="button" id="signupBtn" value="회원가입">
+                <input type="button" @click="signup()" id="signupBtn" value="회원가입">
             </div>	
         </form>
     </div>
@@ -37,12 +37,17 @@ export default {
                 userId: this.userId,
                 userPwd: this.userPwd
             }).then(({data}) => {
-                console.log(data);
-                console.log("성공")
+                if(data.message==='success'){
+                    alert('로그인 성공')
+                    this.$router.push({name: 'home'})
+                }else alert('로그인 실패')
             })
             .catch((data) => {
                 console.log(data) 
                 console.log(" 전송됨?")});
+        },
+        signup(){
+            this.$router.push('/signup')
         }
     }
 }
