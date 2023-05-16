@@ -4,7 +4,7 @@
         <h1>지역별 여행지 검색</h1>
         <form method="GET" action="search">
         <div class="region">
-            <select id="sido" @change="changeSido" v-model="sidoCode">
+            <select id="sido" v-model="sidoCode" @change="changeSido" >
                 <option value="0" selected>시도 선택</option>
                 <option value="1">서울</option>
                 <option value="2">인천</option>
@@ -18,7 +18,8 @@
                 <option value="32">강원도</option>
             </select>
             <select id="gugun" v-model="gugunCode">
-                <option value="0">시군구 선택</option>
+                <option v-if="sidoCode==0" :value="0">구군 선택</option>
+                <option v-else v-for="gugun in gugunData" :key="gugun.gugunCode" :value="gugun.gugunCode">{{gugun.gugunName}}</option>
             </select>
             <select id="category" v-model="category">
                 <option value="0" selected>카테고리 선택</option>
@@ -53,29 +54,23 @@ export default {
             gugunCode: 0,
             category: 0,
             keyword: "",
+            gugunData: [],
             mapData:[],
         }
     },
     methods:{
-        async changeSido(){
-            await axios.get(`region/search/${this.sidoCode}`)
+        changeSido(){
+            axios.get(`region/search/${this.sidoCode}`)
             .then(({data})=>{
-                let gugunList = document.getElementById('gugun');
-                while(gugunList.firstChild){
-                    gugunList.firstChild.remove()
-                }
-                for(let item of data){
-                    let option = document.createElement('option');
-                    option.setAttribute('value', item.gugunCode);
-                    option.innerText=item.gugunName;
-                    gugunList.appendChild(option);
-                }
+                this.gugunData.length=0;
+                data.map((item)=>{
+                    this.gugunData.push(item);
+                })
             });
         },
-        async regionSearch(){
+        regionSearch(){
             let keyword = this.keyword == "" ? "0" : this.keyword;
-            console.log(keyword)
-            await axios.get(`region/search/${this.sidoCode}/${this.gugunCode}/${this.category}/${keyword}/`)
+            axios.get(`region/search/${this.sidoCode}/${this.gugunCode}/${this.category}/${keyword}/`)
             .then(({data})=>{
                 if(data.length==0){
                     alert('여행지 정보가 없습니다')
@@ -110,7 +105,7 @@ body{
 }
 .center{
     position:absolute;
-    top : 30%;
+    top : 25%;
     left : 50%;
     transform : translate(-50%, -50%);
     width:80%;

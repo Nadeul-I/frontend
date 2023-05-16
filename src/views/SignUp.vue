@@ -9,12 +9,12 @@
             </div>
             <label></label>
             <div class="input">
-                <input type="password" v-model="userPwd" name="userPwd" required/>
+                <input type="password" v-model="userPwd" name="userPwd" v-bind:class="{'discord': !this.pwdCompare}" required/>
                 <span></span>
                 <label>비밀번호</label>
             </div>
             <div class="input">
-                <input type="password" v-model="userPwdCheck" id="userpwdCheck" required/>
+                <input type="password" v-model="userPwdCheck" id="userpwdCheck" v-bind:class="{'discord': !this.pwdCompare}" required/>
                 <span></span>
                 <label>비밀번호 확인</label>
             </div>
@@ -55,6 +55,17 @@ export default {
             userName: "",
             userGender: "",
             userEmail: "",
+            pwdCompare : true,
+        }
+    },
+    watch:{
+        userPwdCheck: function(){
+            if(this.userPwd!=this.userPwdCheck) this.pwdCompare = false;
+            else this.pwdCompare = true;
+        },
+        userPwd: function(){
+            if(this.userPwd!=this.userPwdCheck) this.pwdCompare = false;
+            else this.pwdCompare = true;
         }
     },
     methods:{
@@ -111,4 +122,9 @@ export default {
 .dupCheck button{
 	width:30%;
 }
+.discord, .discord:focus{
+    border-bottom: 1px solid red;
+    transition: border-bottom 0.3s ease-in-out;
+}
+
 </style>

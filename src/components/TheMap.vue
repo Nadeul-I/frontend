@@ -1,9 +1,9 @@
 <template>
     <div class="center" id="map"></div>
 </template>
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=8ae06e1c329b4fe685636eddc4ce2a3d"></script>
 
 <script>
+import img from '@/assets/noimage.png'
 export default {
     name: "TheMap",
     props:{
@@ -12,6 +12,7 @@ export default {
     data(){
         return{
             map : null,
+            openedInfo : [],
         }
     },
     mounted(){
@@ -43,15 +44,42 @@ export default {
                 alert("여행지 정보가 없습니다.")
                 return;
             }
-            this.mapData.forEach(function(item){
-                let markerPosition = new kakao.maps.LatLng(item.latitude, item.longitude);
-                let markers = new kakao.maps.Marker({
-                    position: markerPosition
-                });
-                console.log(markers)
-            //     markers.setMap(this.map);
-            //     this.map.setCenter(new kakao.maps.LatLng(item.latitude, item.longitude))
-             })
+            this.initMap();
+            console.log(this.mapData)
+            this.mapData.map((item)=>{
+            let mapLatLng = new kakao.maps.LatLng(item.latitude, item.longitude)
+            this.map.setCenter(mapLatLng)
+
+            let markerPosition = mapLatLng
+            let marker = new kakao.maps.Marker({
+                position: markerPosition,
+                clickable: true,
+            })
+            
+            marker.setMap(this.map)
+            let infoContent = `<div class="info" style="padding:5px;">
+                                <div>${item.title.length>12 ? item.title.substring(0,12)+"..." : item.title}</div>
+                                <div class="show_info">
+                                    <div class="info_image">
+                                        <img src="${item.firstImage==null ? img : item.firstImage}">
+                                    </div>
+                                    <div class="info_detail">
+                                        <div>${item.addr1}</div>
+                                        <div>${item.addr2 == null ? "":item.addr2}</div>
+                                    </div>
+                                </div>
+                                </div>`,
+                infoRemoveable = true;
+
+            let info = new kakao.maps.InfoWindow({
+                content : infoContent,
+                removable : infoRemoveable,
+            })
+            kakao.maps.event.addListener(marker, 'click', ()=>{
+                info.open(this.map, marker)
+            })
+                
+            });
         }
     },
     methods:{
@@ -60,12 +88,15 @@ export default {
 
             const options = {
             // 처음 지도의 위치를 lat, lng(위도, 경도) 값으로 설정한다.
-            center: new kakao.maps.LatLng(33.450701, 126.570667),
+            center: new kakao.maps.LatLng(35.161068, 126.80197),
             level: 8
             }
         
             this.map = new kakao.maps.Map(container, options)
         },
+        replace(e){
+            e.target.src = require(`@/assets/noimage.png`);
+        }
         
     }
 }
@@ -76,5 +107,23 @@ export default {
     width:100%;
     height:500px;
     top: 220%;
+}
+.info{
+    width:350px;
+    height:150px;
+    font-size:16px;
+    margin: 0 10px;
+}
+.info .show_info{
+    display:flex;
+    justify-content:space-between;
+    padding-top:10px;
+}
+.info .show_info>div{
+    padding:5px;
+}
+.info img{
+    width:100px;
+    height:100px;
 }
 </style>
