@@ -1,7 +1,7 @@
 <template>
    <div class="center">
         <h1>로그인</h1>
-        <form>
+        <form @submit.prevent="signin()">
             <div class="input">
                 <input type="text" name="userId" v-model="userId" required/>
                 <span></span>
@@ -14,16 +14,15 @@
             </div>
             <div class="find" id="find">비밀번호를 잊으셨나요?</div>
             <div class="input">
-                <input type="button" value="로그인" v-on:click="signin()" />
-                <input type="button" id="signupBtn" value="회원가입">
-            </div>
-            
+                <input type="submit" id="login" value="로그인" />
+                <input type="button" @click="signup()" id="signupBtn" value="회원가입">
+            </div>	
         </form>
     </div>
 </template>
 
 <script>
-import axios from 'axios';
+import axios from '@/util.js';
 export default {
     name: "SignIn",
     data(){
@@ -33,15 +32,22 @@ export default {
         }
     },
     methods:{
-        signin(){
-            console.log(this.userId)
-            axios.post('/signin', {
-                userId : this.userId,
-                userPwd : this.userPwd
-            }).then((data) => console.log(data))
+        async signin(){
+            await axios.post('auth/signin', {
+                userId: this.userId,
+                userPwd: this.userPwd
+            }).then(({data}) => {
+                if(data.message==='success'){
+                    alert('로그인 성공')
+                    this.$router.push({name: 'home'})
+                }else alert('로그인 실패')
+            })
             .catch((data) => {
                 console.log(data) 
                 console.log(" 전송됨?")});
+        },
+        signup(){
+            this.$router.push('/signup')
         }
     }
 }

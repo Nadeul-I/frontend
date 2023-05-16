@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import SignIn from '../views/SignIn.vue'
 import SignUp from '../views/SignUp.vue'
+import RegionSearch from '../views/RegionSearch.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -14,12 +15,17 @@ const routes = [
   {
     path: '/signin',
     name: 'SignIn',
-    component: SignIn
+    component: SignIn,
   },
   {
     path: '/signup',
     name: 'SignUp',
     component: SignUp,
+  },
+  {
+    path: '/region',
+    name: 'Region',
+    component: RegionSearch,
   }
 ]
 

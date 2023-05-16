@@ -5,7 +5,7 @@
     <div>
       <ul class="header-inner">
         <li><a href="">공지사항</a></li>
-        <li><a href="${root}/region">여행 계획</a></li>
+        <router-link to="region">여행 계획</router-link>
         <li><a href="${root }/board/list?pgno=1&search=&word=">여행 후기</a></li>
         <li><a href="${root }/board/list?pgno=1&search=&word=">자유 게시판</a></li>
       </ul>
