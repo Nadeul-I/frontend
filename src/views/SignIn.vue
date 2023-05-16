@@ -16,7 +16,8 @@
             <div class="input">
                 <input type="button" value="로그인" v-on:click="signin()" />
                 <input type="button" id="signupBtn" value="회원가입">
-            </div>	
+            </div>
+            
         </form>
     </div>
 </template>
