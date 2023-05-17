@@ -6,6 +6,7 @@ import SignUp from '../views/SignUp.vue'
 import FindPwd from '../views/FindPwd.vue'
 import RegionSearch from '../views/RegionSearch.vue'
 import MapTest from '../views/MapTest.vue'
+import BoardList from '../views/BoardList.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -38,6 +39,11 @@ const routes = [
     path: '/maptest',
     name: 'MapTest',
     component : MapTest,
+  },
+  {
+    path: '/board',
+    name: 'Board',
+    component : BoardList,
   }
 ]
 
