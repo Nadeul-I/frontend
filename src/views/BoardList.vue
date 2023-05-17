@@ -45,7 +45,7 @@
                     <div>날짜</div>
                 </div>
                 </li>
-                <li v-for="board in boards" :key="board.boardNo" >
+                <li v-for="board in boards" :key="board.boardNo" @click="boardView(board.boardNo)" >
                     <div class="board-list-content">
                         <div>{{board.boardTitle}}</div>
                         <div>{{board.boardId}}</div>
@@ -58,11 +58,11 @@
 
             <div class="board-list-write-container">
             <span>
-            <button id="board-list-write-btn" class="btn btn-write"> 글쓰기</button>
+            <button id="board-list-write-btn" class="btn btn-write" @click="moveWrite()"> 글쓰기</button>
             </span>
             </div>
 
-            <div class="navigator">${navigation.navigator}</div>
+            <div class="navigator"></div>
         </div>
     </main>
 </template>
@@ -75,14 +75,19 @@ export default {
             boards: [],
         }
     },
-    created(){
-        axios.get('/board')
+    async created(){
+        await axios.get('/board')
         .then(({data})=>{
             data.boards.map((item) => {this.boards.push(item)});
         })
     },
     methods:{
-
+        boardView(boardNo){
+            this.$router.push({name: 'BoardView', params:{'boardNo' : boardNo}})
+        },
+        moveWrite(){
+            this.$router.push({name: 'BoardWrite'})
+        }
     }
 }
 </script>
@@ -90,7 +95,7 @@ export default {
 <style>
 .board-list-main{
     position:absolute;
-    top : 40%;
+    top : 45%;
     left : 50%;
     transform : translate(-50%, -50%);
     width:80%;
