@@ -29,7 +29,7 @@
                 <label>성별</label>
             </div>
             <div class="input">
-                <input type="text" v-model="userEmail" name="userEmail" required/>
+                <input type="text" v-model="userEmail" name="userEmail" v-bind:class="{'discord': !this.emailValidation}" required/>
                 <span></span>
                 <label>이메일</label>
             </div>
@@ -49,6 +49,7 @@ export default {
     data(){
         return{
             dupCheckResult: false,
+            checkedUserId: "",
             userId: "",
             userPwd: "",
             userPwdCheck: "",
@@ -56,6 +57,7 @@ export default {
             userGender: "",
             userEmail: "",
             pwdCompare : true,
+            emailValidation: true,
         }
     },
     watch:{
@@ -66,13 +68,19 @@ export default {
         userPwd: function(){
             if(this.userPwd!=this.userPwdCheck) this.pwdCompare = false;
             else this.pwdCompare = true;
-        }
+        },
+        userEmail:function(){
+            let regex = new RegExp('[a-z0-9]+@[a-z]+.[a-z]{2,3}');
+            if(regex.test(this.userEmail)||this.userEmail=='') this.emailValidation = true;
+            else this.emailValidation = false;
+},
     },
     methods:{
         signup(){
             let cond = true;
             if(!this.dupCheckResult) cond = false;
-            
+            if(this.userId!=this.checkedUserId) cond = false;
+            if(!this.emailValidation) cond = false;
             if(cond){
                 axios.post('/auth/signup',{
                     userId: this.userId,
@@ -100,6 +108,7 @@ export default {
                 }else {
                     alert('사용할 수 있는 아이디')
                     this.dupCheckResult=true
+                    this.checkedUserId = this.userId;
                 }
             })
             .catch(({data})=>console.log(data))

@@ -12,7 +12,7 @@
                 <span></span>
                 <label>비밀번호</label>
             </div>
-            <div class="find" id="find">비밀번호를 잊으셨나요?</div>
+            <div class="find" id="find" @click="findpwd()">비밀번호를 잊으셨나요?</div>
             <div class="input">
                 <input type="submit" id="login" value="로그인" />
                 <input type="button" @click="signup()" id="signupBtn" value="회원가입">
@@ -33,7 +33,7 @@ export default {
     },
     methods:{
         async signin(){
-            await axios.post('auth/signin', {
+            await axios.post('/auth/signin', {
                 userId: this.userId,
                 userPwd: this.userPwd
             }).then(({data}) => {
@@ -48,6 +48,9 @@ export default {
         },
         signup(){
             this.$router.push('/signup')
+        },
+        findpwd(){
+            this.$router.push('/findpwd')
         }
     }
 }

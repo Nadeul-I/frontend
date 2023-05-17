@@ -45,7 +45,7 @@ export default {
                 return;
             }
             this.initMap();
-            console.log(this.mapData)
+
             this.mapData.map((item)=>{
             let mapLatLng = new kakao.maps.LatLng(item.latitude, item.longitude)
             this.map.setCenter(mapLatLng)
@@ -61,7 +61,7 @@ export default {
                                 <div>${item.title.length>12 ? item.title.substring(0,12)+"..." : item.title}</div>
                                 <div class="show_info">
                                     <div class="info_image">
-                                        <img src="${item.firstImage==null ? img : item.firstImage}">
+                                        <img src="${item.firstImage==''?img : item.firstImage}" >
                                     </div>
                                     <div class="info_detail">
                                         <div>${item.addr1}</div>
@@ -74,9 +74,11 @@ export default {
             let info = new kakao.maps.InfoWindow({
                 content : infoContent,
                 removable : infoRemoveable,
+                toggle: false,
             })
             kakao.maps.event.addListener(marker, 'click', ()=>{
-                info.open(this.map, marker)
+                !info.toggle ? info.open(this.map, marker) : info.close();
+                info.toggle = !info.toggle;
             })
                 
             });
@@ -95,7 +97,7 @@ export default {
             this.map = new kakao.maps.Map(container, options)
         },
         replace(e){
-            e.target.src = require(`@/assets/noimage.png`);
+            e.target.src = img;
         }
         
     }
@@ -109,7 +111,7 @@ export default {
     top: 220%;
 }
 .info{
-    width:350px;
+    width:300px;
     height:150px;
     font-size:16px;
     margin: 0 10px;
@@ -120,10 +122,11 @@ export default {
     padding-top:10px;
 }
 .info .show_info>div{
-    padding:5px;
+    padding-right:15px;
 }
 .info img{
     width:100px;
     height:100px;
+    border-radius:5px;
 }
 </style>

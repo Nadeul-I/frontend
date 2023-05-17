@@ -6,16 +6,19 @@
       <ul class="header-inner">
         <li><a href="">공지사항</a></li>
         <router-link to="region">여행 계획</router-link>
-        <li><a href="${root }/board/list?pgno=1&search=&word=">여행 후기</a></li>
+        <router-link to="maptest">여행 계획</router-link>
+        <!-- <li><a href="${root }/board/list?pgno=1&search=&word=">여행 후기</a></li> -->
         <li><a href="${root }/board/list?pgno=1&search=&word=">자유 게시판</a></li>
       </ul>
     </div>
     <div>
-      <ul class="header-inner">
-        <router-link to="signin">로그인</router-link>
-        <router-link to="signup">회원가입</router-link>
-        <li><a href="${root}/user/mypage"> 마이페이지</a></li>
-        <li><a href="${root}/auth/logout"> 로그아웃</a></li>
+      <ul class="header-inner" v-if="!token">
+        <li><router-link to="signin">로그인</router-link></li>
+        <li><router-link to="signup">회원가입</router-link></li>
+      </ul>
+      <ul class="header-inner" v-else>
+        <li><router-link to="mypage">마이페이지</router-link></li>
+        <li><router-link to="logout">로그아웃</router-link></li>
       </ul>
     </div>
 
@@ -31,7 +34,12 @@
 
 <script>
 export default {
-  name: "TheHeader"
+  name: "TheHeader",
+  data(){
+    return{
+      token:false,
+    }
+  }
 }
 </script>
 

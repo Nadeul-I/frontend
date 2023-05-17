@@ -1,43 +1,8 @@
 <template>
-<div>
-  <div class="center">
-    <h1>지역별 여행지 검색</h1>
-        <form method="GET" action="search">
-        <div class="region">
-            <select id="sido" v-model="sidoCode" @change="changeSido" >
-                <option value="0" selected>시도 선택</option>
-                <option value="1">서울</option>
-                <option value="2">인천</option>
-                <option value="3">대전</option>
-                <option value="4">대구</option>
-                <option value="5">광주</option>
-                <option value="6">부산</option>
-                <option value="7">울산</option>
-                <option value="8">세종</option>
-                <option value="31">경기도</option>
-                <option value="32">강원도</option>
-            </select>
-            <select id="gugun" v-model="gugunCode">
-                <option :value="0">구군 선택</option>
-                <option v-for="gugun in gugunData" :key="gugun.gugunCode" :value="gugun.gugunCode" selected='gugun.gugunCode == 1 ? "selected" : ""'>{{gugun.gugunName}}</option>
-            </select>
-            <select id="category" v-model="category">
-                <option value="0" selected>카테고리 선택</option>
-                <option value="12">관광지</option>
-                <option value="14">문화시설</option>
-                <option value="15">축제공연행사</option>
-                <option value="25">여행코스</option>
-                <option value="28">레포츠</option>
-                <option value="32">숙박</option>
-                <option value="38">쇼핑</option>
-                <option value="39">음식점</option>
-            </select>
-            <input type="text" v-model="keyword" placeholder="키워드 입력"/>
-            <input type="button" @click="regionSearch()" value="검색"/>     
-        </div>
-        </form>
-        <the-map :mapData="mapData" ></the-map>
-    </div>
+<div class="searcharea">
+    <div>검색</div>
+    <the-map :mapData="mapData" ></the-map>
+    <div>작업중입니다.</div>
 </div>
 </template>
 
@@ -103,15 +68,7 @@ body{
     height: 100vh;
     overflow: hidden;
 }
-.center{
-    position:absolute;
-    top : 25%;
-    left : 50%;
-    transform : translate(-50%, -50%);
-    width:80%;
-    background: white;
-    border-radius : 10px;
-}
+
 .center h1{
     text-align:center;
     padding: 20px 0 20px 0;
