@@ -10,7 +10,10 @@ import BoardList from '../views/BoardList.vue'
 import BoardView from '../views/BoardView.vue'
 import BoardWrite from '../views/BoardWrite.vue'
 import BoardModify from '../views/BoardModify.vue'
+import VueCarousel from 'vue-carousel';
+
 Vue.use(VueRouter)
+Vue.use(VueCarousel)
 
 const routes = [
   {
@@ -36,6 +39,11 @@ const routes = [
   {
     path: '/region',
     name: 'Region',
+    component: RegionSearch,
+  },
+  {
+    path: '/region/:sidoCode/:gugunCode/:category/:keyword',
+    name: 'hotRegion',
     component: RegionSearch,
   },
   {

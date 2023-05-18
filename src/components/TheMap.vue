@@ -13,7 +13,11 @@ export default {
         return{
             map : null,
             openedInfo : [],
+            searchLink: false,
         }
+    },
+    created(){
+        if(this.$route.params) this.searchLink = true
     },
     mounted(){
         if (!window.kakao || !window.kakao.maps) {
@@ -58,26 +62,33 @@ export default {
             
             marker.setMap(this.map)
             let infoContent = `<div class="info" style="padding:5px;">
-                                <div>${item.title.length>12 ? item.title.substring(0,12)+"..." : item.title}</div>
-                                <div class="show_info">
+                                <div class="info_title">${item.title.length>12 ? item.title.substring(0,12)+"..." : item.title}</div>
+                                <div class="info_content">
                                     <div class="info_image">
                                         <img src="${item.firstImage==''?img : item.firstImage}" >
                                     </div>
                                     <div class="info_detail">
                                         <div>${item.addr1}</div>
-                                        <div>${item.addr2 == null ? "":item.addr2}</div>
+                                        <div>${item.addr2 == "" ? "" : "("+item.addr2+")"}</div>
                                     </div>
                                 </div>
                                 </div>`,
                 infoRemoveable = true;
 
-            let info = new kakao.maps.InfoWindow({
+            let info = new kakao.maps.CustomOverlay({
                 content : infoContent,
+                map: null,
+                position: markerPosition,
                 removable : infoRemoveable,
                 toggle: false,
+                yAnchor:1.2,
             })
+            if(this.searchLink&&this.mapData.length==1){
+                info.toggle = true,
+                info.setMap(this.map)
+            }
             kakao.maps.event.addListener(marker, 'click', ()=>{
-                !info.toggle ? info.open(this.map, marker) : info.close();
+                !info.toggle ? info.setMap(this.map) : info.setMap(null);
                 info.toggle = !info.toggle;
             })
                 
@@ -98,7 +109,8 @@ export default {
         },
         replace(e){
             e.target.src = img;
-        }
+        },
+        
         
     }
 }
@@ -111,22 +123,33 @@ export default {
     top: 220%;
 }
 .info{
-    width:300px;
+    width:100%;
     height:150px;
     font-size:16px;
-    margin: 0 10px;
+    background-color:white;
+    border-radius:5px;
+    margin: 10px;
 }
-.info .show_info{
+.info .info_title{
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding-bottom:5px;
+}
+.info .info_content{
     display:flex;
     justify-content:space-between;
     padding-top:10px;
 }
-.info .show_info>div{
-    padding-right:15px;
+.info .info_content>div{
+    padding:0 15px;
 }
 .info img{
     width:100px;
     height:100px;
     border-radius:5px;
+}
+.info_detail{
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-start;
 }
 </style>

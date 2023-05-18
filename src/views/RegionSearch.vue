@@ -5,21 +5,12 @@
         <form method="GET" action="search">
         <div class="region">
             <select id="sido" v-model="sidoCode" @change="changeSido" >
-                <option value="0" selected>시도 선택</option>
-                <option value="1">서울</option>
-                <option value="2">인천</option>
-                <option value="3">대전</option>
-                <option value="4">대구</option>
-                <option value="5">광주</option>
-                <option value="6">부산</option>
-                <option value="7">울산</option>
-                <option value="8">세종</option>
-                <option value="31">경기도</option>
-                <option value="32">강원도</option>
+                <option :value="0" selected>시도 선택</option>
+                <option v-for="sido in sidoData" :key="sido.sidoCode" :value="sido.sidoCode">{{sido.sidoName}}</option>
             </select>
             <select id="gugun" v-model="gugunCode">
-                <option :value="0">구군 선택</option>
-                <option v-for="gugun in gugunData" :key="gugun.gugunCode" :value="gugun.gugunCode" selected='gugun.gugunCode == 1 ? "selected" : ""'>{{gugun.gugunName}}</option>
+                <option :value="0" selected>구군 선택</option>
+                <option v-for="gugun in gugunData" :key="gugun.gugunCode" :value="gugun.gugunCode" >{{gugun.gugunName}}</option>
             </select>
             <select id="category" v-model="category">
                 <option value="0" selected>카테고리 선택</option>
@@ -54,9 +45,29 @@ export default {
             gugunCode: 0,
             category: 0,
             keyword: "",
+            sidoData: [],
             gugunData: [],
             mapData:[],
         }
+    },
+    created(){
+        if(this.$route.query.sidoCode){
+            this.sidoCode= this.$route.query.sidoCode,
+            this.changeSido()
+            this.gugunCode= this.$route.query.gugunCode,
+            this.category= this.$route.query.category,
+            this.keyword= this.$route.query.keyword,
+            this.regionSearch()
+        }
+        // sido list load
+        axios.get(`/region/search`)
+        .then(({data})=>{
+            data.map((item)=>{
+                this.sidoData.push(item);
+                console.log(item)
+            })
+        })
+
     },
     methods:{
         changeSido(){
@@ -64,12 +75,14 @@ export default {
             .then(({data})=>{
                 this.gugunData.length=0;
                 data.map((item)=>{
+                    console.log(item.sidoName)
                     this.gugunData.push(item);
                 })
             });
         },
         regionSearch(){
             let keyword = this.keyword == "" ? "0" : this.keyword;
+            console.log(keyword)
             axios.get(`/region/search/${this.sidoCode}/${this.gugunCode}/${this.category}/${keyword}/`)
             .then(({data})=>{
                 if(data.length==0){
