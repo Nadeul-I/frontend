@@ -62,7 +62,46 @@
             </span>
             </div>
 
-            <div class="navigator"></div>
+            <div class="navigator">
+                <span>
+                    <ul class="pagination">
+                        <li class="page-item">
+                            <a href="#" class="page-link">최신</a>
+                        </li>
+                        <li class="page-item">
+                            <a href="#" class="page-link">이전</a>
+                        </li>
+                        <li class="page-item" v-for="i in indexList" :key="i.index">
+                            <a href="#" class="page-link">{{i.value}}</a>
+                        </li>
+                        <li class="page-item">
+                            <a href="#" class="page-link">다음</a>
+                        </li>
+                        <li class="page-item">
+                            <a href="#" class="page-link">마지막</a>
+                        </li>
+                    </ul>
+                </span>
+            </div>
+
+            <form id="board-list-list" method="get" action="${root}/board/list">
+                <input type="hidden" id="pgno" name="pgno" value="" />
+                <input type="hidden" name="search" value="${search}" />
+                <input type="hidden" name="word" value="${word}" />
+            </form>
+
+            <form id="board-list-view" method="get" action="${root}/board/view">
+            <input type="hidden" name="pgno" value="${pgno}" />
+            <input type="hidden" name="search" value="${search}" />
+            <input type="hidden" name="word" value="${word}" />
+            <input type="hidden" id="boardNo" name="boardNo" value="" />
+            </form>
+
+            <form id="board-list-write" method="get" action="${root}/board/write">
+            <input type="hidden" name="pgno" value="${pgno}" />
+            <input type="hidden" name="search" value="${search}" />
+            <input type="hidden" name="word" value="${word}" />
+            </form>
         </div>
     </main>
 </template>
@@ -73,12 +112,21 @@ export default {
     data(){
         return{
             boards: [],
+            navigation: "",
+            indexList :[],
         }
     },
-    async created(){
-        await axios.get('/board')
+    created(){
+        axios.get('/board')
         .then(({data})=>{
+            console.log(data)
+            this.navigation = data.navigation;
             data.boards.map((item) => {this.boards.push(item)});
+            console.log(this.navigation)
+            for(let i=1; i<=this.navigation.endPage; i++){
+                this.indexList.push({'index' : i, 'value': i})
+            }
+            console.log(this.indexList)
         })
     },
     methods:{
@@ -92,10 +140,10 @@ export default {
 }
 </script>
 
-<style>
+<style >
 .board-list-main{
     position:absolute;
-    top : 45%;
+    top : 100%;
     left : 50%;
     transform : translate(-50%, -50%);
     width:80%;
@@ -104,7 +152,7 @@ export default {
 }
 
 .board-list-container {
-    width: 1200px;
+    width: 100%;
     margin: auto;
 }
 
@@ -177,19 +225,19 @@ export default {
 }
 
 .board-list-title div:nth-child(1), .board-list-content div:nth-child(1) {
-  width: 650px;
+  width: 60%;
 }
 
 .board-list-title div:nth-child(2), .board-list-content div:nth-child(2) {
-  width: 200px;
+  width: 15%;
 }
 
 .board-list-title div:nth-child(3), .board-list-content div:nth-child(3) {
-  width: 75px;
+  width: 10%;
 }
 
 .board-list-title div:nth-child(4), .board-list-content div:nth-child(4) {
-  width: 140px;
+  width: 15%;
 }
 
 .board-list-write-container{
@@ -203,22 +251,22 @@ export default {
 }
 
 .page-link{
-	box-shadow:inset 0px 1px 0px 0px #bee2f9;
 	background-color:transparent;
-	border:1px solid #3866a3;
-	display:inline-block;
 	cursor:pointer;
-	color:#14396a;
+	color:#7cacde;
+    border-bottom:0px;
 	font-family:Arial;
-	font-size:15px;
+	font-size:16px;
 	font-weight:bold;
-	padding:6px 24px;
 	text-decoration:none;
+    margin:5px 10px;
+    padding-bottom:5px;
 	text-shadow:0px 1px 0px #7cacde;
 }
 
 .page-link:hover {
-	background-color:#bddaff;
+    border-bottom: 1px solid #14396a;
+	transition: border-bottom 0.5s ease-in;
 }
 .page-link:active {
 	position:relative;

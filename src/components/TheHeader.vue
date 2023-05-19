@@ -68,7 +68,7 @@ ol, ul{
 }
 
 .lump{
-    height: 150px;
+    height: 100px;
 }
 
 .btn{

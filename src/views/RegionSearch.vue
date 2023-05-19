@@ -1,6 +1,6 @@
 <template>
 <div>
-  <div class="center">
+<div class="center">
     <h1>지역별 여행지 검색</h1>
         <form method="GET" action="search">
         <div class="region">
@@ -57,6 +57,13 @@ export default {
             this.gugunCode= this.$route.query.gugunCode,
             this.category= this.$route.query.category,
             this.keyword= this.$route.query.keyword,
+            this.mapData=[{
+                sidoCode : this.sidoCode,
+                gugunCode : this.gugunCode,
+                category : this.category,
+                keyword : this.keyword,
+                }
+            ]
             this.regionSearch()
         }
         // sido list load
@@ -64,7 +71,6 @@ export default {
         .then(({data})=>{
             data.map((item)=>{
                 this.sidoData.push(item);
-                console.log(item)
             })
         })
 
@@ -75,14 +81,12 @@ export default {
             .then(({data})=>{
                 this.gugunData.length=0;
                 data.map((item)=>{
-                    console.log(item.sidoName)
                     this.gugunData.push(item);
                 })
             });
         },
         regionSearch(){
             let keyword = this.keyword == "" ? "0" : this.keyword;
-            console.log(keyword)
             axios.get(`/region/search/${this.sidoCode}/${this.gugunCode}/${this.category}/${keyword}/`)
             .then(({data})=>{
                 if(data.length==0){

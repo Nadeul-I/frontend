@@ -1,9 +1,9 @@
 <template>
     <div class="hotplace">
-        <h2>🔥 hot place 🔥</h2>
-        <carousel class="info-carousel" :per-page="5" :autoplay="true">
+        <h2>🔥 Hot Place 🔥</h2>
+        <carousel class="info-carousel" :per-page="5" :autoplay="true" :autoplayTimeout="5000">
             <slide v-for="hotPlace in hotPlaceList" :key="hotPlace.contentId" >
-                <div @click="moveToSearch(hotPlace.sidoCode, hotPlace.gugunCode, hotPlace.contentTypeId, hotPlace.title)">
+                <div class="hotplace_item" @click="moveToSearch(hotPlace.sidoCode, hotPlace.gugunCode, hotPlace.contentTypeId, hotPlace.title)">
                     <img :src="hotPlace.firstImage" />
                     <p v-text="hotPlace.title"></p>
                 </div>
@@ -15,16 +15,16 @@
 <script>
 import { Carousel, Slide } from 'vue-carousel'
 import axios from '@/util.js'
-
 export default {
     name: 'HotPlace',
     components:{
         Carousel,
-        Slide
+        Slide,
     },
     data(){
         return{
             hotPlaceList: [],
+            img: '@/assets/noimage.png',
         }
     },
     created(){
@@ -32,7 +32,6 @@ export default {
         axios.get('/region/hotplace')
         .then(({data}) => {
             data.map((item)=>{
-                console.log(item)
                 tempList.push(item)
             })
         })
@@ -40,7 +39,7 @@ export default {
     },
     methods:{
         moveToSearch(sidoCode, gugunCode, category, keyword){
-            this.$router.push({name: 'hotRegion', query:{'sidoCode': sidoCode, 'gugunCode': gugunCode, 'category':category, 'keyword': keyword}});
+            this.$router.push({name: 'hotRegion', query:{sidoCode, gugunCode,category, keyword}});
         }
     }
 }
@@ -56,11 +55,19 @@ h2{
     text-align:left;
     padding-left: 10px;
 }
-.hotplace{
-    top: 10%;
-    margin-top:10%;
+
+.hotplace:hover{
+    cursor:pointer;
 }
 .hotplace p{
-    font-size:20px;
+    font-size:18px;
 }
+.hotplace_item{
+    padding:10px;
+    padding-bottom: 30px;
+    border : 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    height:300px;
+}
+
 </style>
