@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import axios from '@/util.js';
+import { FindPwd } from '@/api/user.js'
 export default {
     name: 'FindPwd',
     data(){
@@ -42,14 +42,16 @@ export default {
             this.$router.push('/signin')
         },
         findpwd(){
-            axios.post('/user/findpwd', {
-                userId: this.userId,
+            let userInfo = {
+                userId : this.userId,
                 userEmail : this.userEmail,
-            }).then(({data}) => {
+            }
+            FindPwd(userInfo,
+            ({data}) => {
                 if(data.message==='success'){
                     this.pwdfound = true;
                     this.userPwd = data.userInfo;
-                }else if(data.message==='fail'){
+                }else if(data.message === 'fail'){
                     this.pwdfound = true;
                 }else{
                     alert('오류 발생')

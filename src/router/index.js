@@ -1,9 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import SignIn from '../views/SignIn.vue'
-import SignUp from '../views/SignUp.vue'
-import FindPwd from '../views/FindPwd.vue'
 import RegionSearch from '../views/RegionSearch.vue'
 import MapTest from '../views/MapTest.vue'
 import VueCarousel from 'vue-carousel';
@@ -18,19 +15,26 @@ const routes = [
     component: HomeView
   },
   {
-    path: '/signin',
-    name: 'SignIn',
-    component: SignIn,
-  },
-  {
-    path: '/signup',
-    name: 'SignUp',
-    component: SignUp,
-  },
-  {
-    path: '/findpwd',
-    name: 'FindPwd',
-    component : FindPwd,
+    path: '/user',
+    name: 'user',
+    component: () => import('@/views/AppUser'),
+    children: [
+      {
+        path: 'signin',
+        name: 'SignIn',
+        component: () => import('@/components/user/SignIn')
+      },
+      {
+        path: 'signup',
+        name: 'SignUp',
+        component: () => import('@/components/user/SignUp')
+      },
+      {
+        path: 'findPwd',
+        name: 'FindPwd',
+        component: () => import('@/components/user/FindPwd')
+      }
+    ]
   },
   {
     path: '/region',

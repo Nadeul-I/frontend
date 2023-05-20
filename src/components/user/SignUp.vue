@@ -9,12 +9,12 @@
             </div>
             <label></label>
             <div class="input">
-                <input type="password" v-model="userPwd" name="userPwd" v-bind:class="{'discord': !this.pwdCompare}" required/>
+                <input type="password" v-model="userPwd" name="userPwd" v-bind:class="{'discord': !pwdCompare}" required/>
                 <span></span>
                 <label>비밀번호</label>
             </div>
             <div class="input">
-                <input type="password" v-model="userPwdCheck" id="userpwdCheck" v-bind:class="{'discord': !this.pwdCompare}" required/>
+                <input type="password" v-model="userPwdCheck" id="userpwdCheck" v-bind:class="{'discord': !pwdCompare}" required/>
                 <span></span>
                 <label>비밀번호 확인</label>
             </div>
@@ -29,7 +29,7 @@
                 <label>성별</label>
             </div>
             <div class="input">
-                <input type="text" v-model="userEmail" name="userEmail" v-bind:class="{'discord': !this.emailValidation}" required/>
+                <input type="text" v-model="userEmail" name="userEmail" v-bind:class="{'discord': !emailValidation}" required/>
                 <span></span>
                 <label>이메일</label>
             </div>
@@ -43,9 +43,8 @@
 </template>
 
 <script>
-import axios from '@/util.js'
+import { IdCheck, SignUp } from '@/api/user'
 export default {
-
     data(){
         return{
             dupCheckResult: false,
@@ -62,10 +61,13 @@ export default {
     },
     watch:{
         userPwdCheck: function(){
+            console.log(this.userPwdCheck)
             if(this.userPwd!=this.userPwdCheck) this.pwdCompare = false;
             else this.pwdCompare = true;
         },
         userPwd: function(){
+            console.log(this.userPwd)
+            console.log(this.userPwd==this.userPwdCheck)
             if(this.userPwd!=this.userPwdCheck) this.pwdCompare = false;
             else this.pwdCompare = true;
         },
@@ -82,17 +84,20 @@ export default {
             if(this.userId!=this.checkedUserId) cond = false;
             if(!this.emailValidation) cond = false;
             if(cond){
-                axios.post('/auth/signup',{
+                let userInfo = {
                     userId: this.userId,
                     userPwd : this.userPwd,
                     userName : this.userName,
                     userGender : this.userGender,
                     userEmail : this.userEmail,
-                }).then(({data})=>{
-                    if(data.message==='success'){
-                        alert('회원가입 성공')
-                        this.$router.push('/signin')
-                    }
+                }
+                SignUp(userInfo, 
+                () => {
+                    alert('회원가입 성공')
+                    this.$router.replace('/user/signin');
+                },
+                () => {
+                    alert('에러 발생')
                 })
             }else{
                 alert('바꾸셈')
@@ -100,19 +105,24 @@ export default {
             
         },
         async idDupCheck(){
-            await axios.post('/auth/idDupCheck', 
-                this.userId,
-            ).then(({data})=>{
+            if(this.userId==''){
+                alert('아이디를 입력해주세요.')
+                return
+            }
+            let userId = {
+                userId : this.userId
+            }
+            IdCheck(userId, 
+            ({data}) => {
                 if(data.message==='fail'){
                     alert('이미 존재하는 아이디')
                 }else {
                     alert('사용할 수 있는 아이디')
                     this.dupCheckResult=true
                     this.checkedUserId = this.userId;
-                }
-            })
-            .catch(({data})=>console.log(data))
-        },
+                }}, 
+                ()=>console.log('실패'))
+        }   ,
         signin(){
             this.$router.push('/signin')
         }

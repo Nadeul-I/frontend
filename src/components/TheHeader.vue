@@ -13,8 +13,8 @@
     </div>
     <div>
       <ul class="header-inner" v-if="!token">
-        <li><router-link to="signin">로그인</router-link></li>
-        <li><router-link to="signup">회원가입</router-link></li>
+        <li><router-link :to="{ name : 'SignIn' }">로그인</router-link></li>
+        <li><router-link :to="{ name : 'SignUp' }">회원가입</router-link></li>
       </ul>
       <ul class="header-inner" v-else>
         <li><router-link to="mypage">마이페이지</router-link></li>
