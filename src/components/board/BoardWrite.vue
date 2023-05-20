@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import axios from '@/util.js';
+import { boardWrite } from '@/api/board'
 export default {
     data(){
         return{
@@ -52,13 +52,12 @@ export default {
     },
     methods:{
         write(){
-            axios.post('/board',{
+            let boardInfo = {
                 boardId: 'ssafy',
                 boardTitle: this.boardTitle,
                 boardContent : this.boardContent,
-
-            })
-            this.$router.push('/board');
+            }
+            boardWrite(boardInfo, () => this.$router.replace(`/board`), () => console.log('write 실패'));
         }
     }
 }

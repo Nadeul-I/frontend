@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import axios from '@/util.js';
+import { boardView, boardModify } from '@/api/board'
 export default {
     data(){
         return{
@@ -59,20 +59,23 @@ export default {
         }
     },
     created(){
-        axios.get(`/board/${this.boardNo}`)
-        .then(({data})=>{
-            this.board = data
-        })
+        boardView(this.boardNo, 
+        ({data}) => 
+        {   this.board = data,
+            this.boardTitle = this.board.boardTitle,
+            this.boardContent = this.board.boardContent;
+        }, 
+        (error) => {console.log(error)})
     },
     methods:{
         modifyArticle(){
-            axios.put(`/board/${this.boardNo}`,{
+            let boardInfo = {
                 boardNo : this.boardNo,
                 boardTitle : this.boardTitle,
                 boardContent : this.boardContent,
-            })
-            this.$router.push('/board')
-        }
+            }
+            boardModify(boardInfo, this.$router.replace('/board'), () => {console.log('수정 실패')});
+        },
     }
 }
 </script>

@@ -6,10 +6,6 @@ import SignUp from '../views/SignUp.vue'
 import FindPwd from '../views/FindPwd.vue'
 import RegionSearch from '../views/RegionSearch.vue'
 import MapTest from '../views/MapTest.vue'
-import BoardList from '../views/BoardList.vue'
-import BoardView from '../views/BoardView.vue'
-import BoardWrite from '../views/BoardWrite.vue'
-import BoardModify from '../views/BoardModify.vue'
 import VueCarousel from 'vue-carousel';
 
 Vue.use(VueRouter)
@@ -54,22 +50,31 @@ const routes = [
   {
     path: '/board',
     name: 'Board',
-    component : BoardList,
-  },
-  {
-    path: '/boardView/:boardNo',
-    name: 'BoardView',
-    component : BoardView,
-  },
-  {
-    path: '/boardWrite',
-    name: 'BoardWrite',
-    component : BoardWrite,
-  },
-  {
-    path: '/boardModify/:boardNo',
-    name: 'BoardModify',
-    component : BoardModify,
+    component: () => import('@/views/AppBoard'),
+    redirect: '/board/list',
+    children: [
+      {
+        path: 'list',
+        name: 'BoardList',
+        component: () => import('@/components/board/BoardList')
+      },
+      {
+        path: 'write',
+        name: 'BoardWrite',
+        //beforeEnter : onlyAuthorUser => 토큰 처리 가능해지면 사용.
+        component: () => import('@/components/board/BoardWrite')
+      },
+      {
+        path: 'view/:boardNo',
+        name: 'BoardView',
+        component: () => import('@/components/board/BoardView')
+      },
+      {
+        path: 'modify',
+        name: 'BoardModify',
+        component: () => import('@/components/board/BoardModify')
+      }
+    ]
   }
 ]
 

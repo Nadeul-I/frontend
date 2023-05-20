@@ -107,7 +107,7 @@
 </template>
 
 <script>
-import axios from '@/util.js'
+import { boardList } from '@/api/board';
 export default {
     data(){
         return{
@@ -117,17 +117,18 @@ export default {
         }
     },
     created(){
-        axios.get('/board')
-        .then(({data})=>{
-            console.log(data)
-            this.navigation = data.navigation;
-            data.boards.map((item) => {this.boards.push(item)});
-            console.log(this.navigation)
-            for(let i=1; i<=this.navigation.endPage; i++){
-                this.indexList.push({'index' : i, 'value': i})
+        boardList(
+            ({data}) => {
+                this.navigation = data.navigation;
+                data.boards.map((item) => {this.boards.push(item)});
+                for(let i=1; i<=this.navigation.endPage; i++){
+                    this.indexList.push({'index' : i, 'value': i})
+                }
+            },
+            (error) =>{
+                console.log(error);
             }
-            console.log(this.indexList)
-        })
+        )
     },
     methods:{
         boardView(boardNo){
@@ -143,16 +144,14 @@ export default {
 <style >
 .board-list-main{
     position:absolute;
-    top : 100%;
-    left : 50%;
-    transform : translate(-50%, -50%);
-    width:80%;
+    margin: auto;
+    width:100%;
     background: white;
     border-radius : 10px;
 }
 
 .board-list-container {
-    width: 100%;
+    width: 80%;
     margin: auto;
 }
 

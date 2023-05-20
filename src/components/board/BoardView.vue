@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import axios from '@/util.js'
+import { boardView, boardDelete } from '@/api/board';
 export default {
     data(){
         return{
@@ -42,18 +42,14 @@ export default {
         }
     },
     created(){
-        axios.get(`/board/${this.boardNo}`)
-        .then(({data})=>{
-            this.boardInfo = data;
-        });
+        boardView(this.boardNo, ({data}) => {this.boardInfo = data}, (error) => {console.log(error)})
     },
     methods:{
         deleteArticle(){
-            axios.delete(`/board/${this.boardNo}`)
-            this.$router.push('/board');
+            boardDelete(this.boardNo, () => this.$router.replace('/board'), (error) => {console.log(error)})
         },
         modifyArticle(){
-            this.$router.push({name: 'BoardModify', params:{'boardNo': this.boardNo}});
+            this.$router.replace({ name: 'BoardModify', params : {boardNo : this.boardNo}});
         }
     }
 }
@@ -70,7 +66,7 @@ export default {
     border-radius : 10px;
 }
 .board-view-container{
-    width: 1200px;
+    width: 80%;
     margin: auto;
 }
 
