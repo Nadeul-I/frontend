@@ -90,6 +90,7 @@ export default {
             kakao.maps.event.addListener(marker, 'click', ()=>{
                 !info.toggle ? info.setMap(this.map) : info.setMap(null);
                 info.toggle = !info.toggle;
+                this.map.panTo(mapLatLng)
             })
                 
             });

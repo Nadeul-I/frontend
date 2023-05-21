@@ -5,7 +5,7 @@
     <div>
       <ul class="header-inner">
         <li><a href="">공지사항</a></li>
-        <router-link to="region">여행지 검색</router-link>
+        <router-link :to="{ name : 'RegionSearch'}">여행지 검색</router-link>
         <router-link to="maptest">여행 계획</router-link>
         <!-- <li><a href="${root }/board/list?pgno=1&search=&word=">여행 후기</a></li> -->
         <router-link :to="{ name : 'Board' }">자유 게시판</router-link>
@@ -43,7 +43,7 @@ export default {
 }
 </script>
 
-<style>
+<style >
 @font-face {
     font-family: 'S-CoreDream-3Light';
     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff') format('woff');

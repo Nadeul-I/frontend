@@ -16,7 +16,7 @@
 
 <script>
 // @ is an alias to /src
-import HotPlace from '@/components/HotPlace'
+import HotPlace from '@/components/region/HotPlace'
 export default {
   name: 'HomeView',
   components: {

@@ -8,7 +8,7 @@
 
 <script>
 import axios from '@/util.js'
-import TheMap from '@/components/TheMap.vue';
+import TheMap from '@/components/region/TheMap.vue';
 export default {
     components:{
         TheMap,

@@ -1,8 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import RegionSearch from '../views/RegionSearch.vue'
-import MapTest from '../views/MapTest.vue'
 import VueCarousel from 'vue-carousel';
 
 Vue.use(VueRouter)
@@ -30,7 +28,7 @@ const routes = [
         component: () => import('@/components/user/SignUp')
       },
       {
-        path: 'findPwd',
+        path: 'findpwd',
         name: 'FindPwd',
         component: () => import('@/components/user/FindPwd')
       }
@@ -39,17 +37,24 @@ const routes = [
   {
     path: '/region',
     name: 'Region',
-    component: RegionSearch,
-  },
-  {
-    path: '/region/:sidoCode/:gugunCode/:category/:keyword',
-    name: 'hotRegion',
-    component: RegionSearch,
-  },
-  {
-    path: '/maptest',
-    name: 'MapTest',
-    component : MapTest,
+    component: () => import('@/views/AppRegion'),
+    children: [
+      {
+        path: 'search',
+        name: 'RegionSearch',
+        component: () => import('@/components/region/RegionSearch')
+      },
+      {
+        path: 'hotplace',
+        name: 'HotPlace',
+        component: () => import('@/components/region/HotPlace')
+      },
+      // { // 추후 삭제
+      //   path: 'mapTest',
+      //   name: 'MapTest',
+      //   component: () => import('@/components/region/MapTest')
+      // }
+    ]
   },
   {
     path: '/board',

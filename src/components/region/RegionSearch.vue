@@ -4,7 +4,7 @@
     <h1>지역별 여행지 검색</h1>
         <form method="GET" action="search">
         <div class="region">
-            <select id="sido" v-model="sidoCode" @change="changeSido" >
+            <select id="sido" v-model="sidoCode" @change="changeGugun" >
                 <option :value="0" selected>시도 선택</option>
                 <option v-for="sido in sidoData" :key="sido.sidoCode" :value="sido.sidoCode">{{sido.sidoName}}</option>
             </select>
@@ -24,7 +24,7 @@
                 <option value="39">음식점</option>
             </select>
             <input type="text" v-model="keyword" placeholder="키워드 입력"/>
-            <input type="button" @click="regionSearch()" value="검색"/>     
+            <input type="button" @click="search()" value="검색"/>     
         </div>
         </form>
         <the-map :mapData="mapData" ></the-map>
@@ -33,8 +33,9 @@
 </template>
 
 <script>
-import axios from '@/util.js'
-import TheMap from '@/components/TheMap.vue';
+import TheMap from '@/components/region/TheMap.vue';
+import { sidoList, gugunList, regionSearch } from '@/api/region';
+
 export default {
     components:{
         TheMap,
@@ -64,42 +65,50 @@ export default {
                 keyword : this.keyword,
                 }
             ]
-            this.regionSearch()
+            this.search()
         }
         // sido list load
-        axios.get(`/region/search`)
-        .then(({data})=>{
-            data.map((item)=>{
-                this.sidoData.push(item);
-            })
-        })
+        sidoList(
+            ({data})=>{
+                data.map((item)=>{
+                    this.sidoData.push(item);
+                })
+            }, 
+            () =>{console.log('sido 로드 실패')})
 
     },
     methods:{
-        changeSido(){
-            axios.get(`/region/search/${this.sidoCode}`)
-            .then(({data})=>{
-                this.gugunData.length=0;
+        changeGugun(){
+            gugunList(this.sidoCode,
+            ({data}) =>{
+                this.gugunData.length = 0;
                 data.map((item)=>{
                     this.gugunData.push(item);
                 })
-            });
+            },
+            (error) => {console.log(error)}
+            )
         },
-        regionSearch(){
-            let keyword = this.keyword == "" ? "0" : this.keyword;
-            axios.get(`/region/search/${this.sidoCode}/${this.gugunCode}/${this.category}/${keyword}/`)
-            .then(({data})=>{
+        search(){
+            let sidoInfo = {
+                sidoCode : this.sidoCode,
+                gugunCode : this.gugunCode,
+                category : this.category,
+                keyword : this.keyword == "" ? "0" : this.keyword
+            }
+            regionSearch(sidoInfo, 
+            ({data}) => {
                 if(data.length==0){
                     alert('여행지 정보가 없습니다')
-                    return;
+                    return
                 }else{
                     let newData = [];
-                    data.forEach((item)=>{
+                    data.map((item)=>{
                         newData.push(item);
                     })
                     this.mapData = newData;
                 }
-            });
+            })
         }
     }
 }
