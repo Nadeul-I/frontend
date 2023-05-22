@@ -39,7 +39,7 @@ export default {
     },
     methods:{
         moveToSearch(sidoCode, gugunCode, category, keyword){
-            this.$router.push({name: 'hotRegion', query:{sidoCode, gugunCode,category, keyword}});
+            this.$router.push({name: 'RegionSearch', query:{sidoCode, gugunCode,category, keyword}});
         }
     }
 }

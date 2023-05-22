@@ -1,34 +1,44 @@
 <template>
 <div>
-<div class="lump"></div>
-<div class="center">
-    <h1>지역별 여행지 검색</h1>
-        <form method="GET" action="search">
-        <div class="region">
-            <select id="sido" v-model="sidoCode" @change="changeGugun" >
-                <option :value="0" selected>시도 선택</option>
-                <option v-for="sido in sidoData" :key="sido.sidoCode" :value="sido.sidoCode">{{sido.sidoName}}</option>
-            </select>
-            <select id="gugun" v-model="gugunCode">
-                <option :value="0" selected>구군 선택</option>
-                <option v-for="gugun in gugunData" :key="gugun.gugunCode" :value="gugun.gugunCode" >{{gugun.gugunName}}</option>
-            </select>
-            <select id="category" v-model="category">
-                <option value="0" selected>카테고리 선택</option>
-                <option value="12">관광지</option>
-                <option value="14">문화시설</option>
-                <option value="15">축제공연행사</option>
-                <option value="25">여행코스</option>
-                <option value="28">레포츠</option>
-                <option value="32">숙박</option>
-                <option value="38">쇼핑</option>
-                <option value="39">음식점</option>
-            </select>
-            <input type="text" v-model="keyword" placeholder="키워드 입력"/>
-            <input type="button" @click="search()" value="검색"/>     
+    <div class="lump"/>   
+    <div class="search" >
+        <div class="search-info" v-if="!searchToggleBtn">
+            <div class="region">
+                <form method="GET" action="search">
+                <select id="sido" v-model="sidoCode" @change="changeGugun" >
+                    <option :value="0" selected>시도 선택</option>
+                    <option v-for="sido in sidoData" :key="sido.sidoCode" :value="sido.sidoCode">{{sido.sidoName}}</option>
+                </select>
+                <select id="gugun" v-model="gugunCode">
+                    <option :value="0" selected>구군 선택</option>
+                    <option v-for="gugun in gugunData" :key="gugun.gugunCode" :value="gugun.gugunCode" >{{gugun.gugunName}}</option>
+                </select>
+                <select id="category" v-model="category">
+                    <option value="0" selected>카테고리 선택</option>
+                    <option value="12">관광지</option>
+                    <option value="14">문화시설</option>
+                    <option value="15">축제공연행사</option>
+                    <option value="25">여행코스</option>
+                    <option value="28">레포츠</option>
+                    <option value="32">숙박</option>
+                    <option value="38">쇼핑</option>
+                    <option value="39">음식점</option>
+                </select>
+                <input type="text" id="search-btn" v-model="keyword" placeholder="키워드 입력"/>
+                <input type="button" @click="search()" value="검색"/>    
+                </form> 
+            </div>
+            <div class="notice">
+                
+            </div>
         </div>
-        </form>
-        <the-map :mapData="mapData" ></the-map>
+            <div class="toggle-btn" v-if="searchToggleBtn">
+                <input type="button" value=">>" @click="searchToggle()"/>
+            </div>
+            <div class="toggle-btn" v-else>
+                <input type="button" value="<<" @click="searchToggle()"/>
+            </div>
+            <the-map :mapData="mapData" ></the-map>
     </div>
 </div>
 </template>
@@ -50,12 +60,13 @@ export default {
             sidoData: [],
             gugunData: [],
             mapData:[],
+            searchToggleBtn: true,
         }
     },
     created(){
         if(this.$route.query.sidoCode){
             this.sidoCode= this.$route.query.sidoCode,
-            this.changeSido()
+            this.changeGugun()
             this.gugunCode= this.$route.query.gugunCode,
             this.category= this.$route.query.category,
             this.keyword= this.$route.query.keyword,
@@ -110,6 +121,9 @@ export default {
                     this.mapData = newData;
                 }
             })
+        },
+        searchToggle(){
+            this.searchToggleBtn = !this.searchToggleBtn;
         }
     }
 }
@@ -124,41 +138,32 @@ export default {
     font-weight: normal;
     font-style: normal;
 }
-body{
-    margin:0;
-    padding:0;
-    height: 100vh;
-    overflow: hidden;
-}
-.center{
-    position:absolute;
-    top : 25%;
-    left : 50%;
-    transform : translate(-50%, -50%);
-    width:80%;
-    background: white;
-    border-radius : 10px;
-}
-.center h1{
-    text-align:center;
-    padding: 20px 0 20px 0;
-    border-bottom: 1px solid silver;
-}
-.center form{
-    padding: 0px 10px 40px;
-    box-sizing: border-box;
-}
 
-select {
-    -moz-appearance: none;
-    -webkit-appearance: none;
-    appearance: none; 
+.search{
+    display: flex;
+    flex-direction:row;
+    justify-content: center;
+    height:calc(100vh - 90px);
+}
+.search-info{
+    padding: 20px;
+    z-index:1;
+}
+.search-info form{
+    display:flex;
+    flex-direction:column;
+}
+#search-container-btn img{
+    width:100px;
+    height:100px;
 }
 .region{
     display:flex;
     flex-direction: row;
     justify-content:center;
     align-items:center;
+    border-bottom : 1px solid rgba(0, 0, 0, 0.1);
+    padding: 10px 0;
 }
 .region > *{
     margin-right: 10px;
@@ -169,27 +174,25 @@ select {
     height: 30px;
     text-align : center;
 }
+.region #search-btn{
+    border-radius: 10px;
+}
+.region .toggle-btn{
+    padding: 0;
+    margin:0;
+}
 input{
 	padding:6px;
 }
 input[type="button"]{
-    width:10%;
-    height:10%;
+    width:100%;
+    height:100%;
 	border:1px solid gray;
 	background-color:white;
 }
 input[type="text"]{
     padding-left: 20px;
     border : 2px solid gray;
-}
-.header-container {
-  border-bottom: 0.1px solid rgba(0, 0, 0, 0.3) !important;
-  background-color: black !important;
-}
-
-.header-container a {
-  color: rgb(153, 0, 255);
-  transition: 0.4s;
 }
 .lump{
     height:89px;

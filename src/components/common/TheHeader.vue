@@ -50,7 +50,6 @@ window.onscroll = function () {
 function navScroll() {
   let headerContainerElement =
     document.getElementsByClassName("header-container")[0];
-  console.log(headerContainerElement);
   if (document.body.scrollTop > 40 || document.documentElement.scrollTop > 40) {
     headerContainerElement.style.borderBottom =
       "0.1px solid rgba(0, 0, 0, 0.3)";
@@ -73,6 +72,7 @@ function navScroll() {
   font-size: 1.5rem;
   transition: 0.4s;
   z-index: 1;
+  height:90px;
 }
 
 .header-container a {

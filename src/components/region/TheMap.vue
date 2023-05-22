@@ -1,5 +1,5 @@
 <template>
-    <div class="center" id="map"></div>
+    <div id="map"></div>
 </template>
 
 <script>
@@ -99,13 +99,19 @@ export default {
     methods:{
         initMap() {
             const container = document.getElementById('map')
-
-            const options = {
+            
+            let options = {
             // 처음 지도의 위치를 lat, lng(위도, 경도) 값으로 설정한다.
-            center: new kakao.maps.LatLng(35.161068, 126.80197),
+            center: new kakao.maps.LatLng(37.515877, 127.05775),
             level: 8
             }
-        
+
+            // if(window.navigator.geolocation){
+            //     window.navigator.geolocation.getCurrentPosition(function(position){
+            //         console.log(position.coords.latitude)
+            //         options.center = new kakao.maps.LatLng(position.coords.latitude, position.coords.longitude);
+            //     })
+            // }
             this.map = new kakao.maps.Map(container, options)
         },
         replace(e){
@@ -116,14 +122,12 @@ export default {
     }
 }
 </script>
-
-<style>
+<style >
 #map{
-    width:100%;
-    height:500px;
-    top: 220%;
+    width:110%;
 }
 .info{
+    object-fit:none;
     width:100%;
     height:150px;
     font-size:16px;
@@ -143,7 +147,8 @@ export default {
 .info .info_content>div{
     padding:0 15px;
 }
-.info img{
+.info_image img{
+    object-fit:none;
     width:100px;
     height:100px;
     border-radius:5px;
@@ -152,5 +157,9 @@ export default {
     display:flex;
     flex-direction:column;
     justify-content:flex-start;
+}
+.lump{
+    height:89px;
+
 }
 </style>
