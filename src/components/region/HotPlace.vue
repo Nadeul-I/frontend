@@ -1,25 +1,28 @@
 <template>
-    <div class="hotplace">
+<div class="hotplace">
+    <div class="hotplace-title">
         <h2>🔥 Hot Place 🔥</h2>
-        <carousel class="info-carousel" :per-page="5" :autoplay="true" :autoplayTimeout="5000">
-            <slide v-for="hotPlace in hotPlaceList" :key="hotPlace.contentId" >
-                <div class="hotplace_item" @click="moveToSearch(hotPlace.sidoCode, hotPlace.gugunCode, hotPlace.contentTypeId, hotPlace.title)">
-                    <img :src="hotPlace.firstImage" />
-                    <p v-text="hotPlace.title"></p>
-                </div>
-            </slide>
-        </carousel>
     </div>
+    <div class="hotplace-content" v-for="hotplace in hotPlaceList" :key="hotplace.keyword" @click="moveToSearch(hotplace.sidoCode, hotplace.gugunCode, hotplace.contentTypeId, hotplace.title)">
+        <div class="hotplace-content-id">
+            <h3>{{hotplace.title}}</h3>
+        </div>
+        <div class="hotplace-content-desc">
+            <div class="hotplace-content-img">
+                <img :src="hotplace.firstImage"/>
+            </div>
+        </div>
+
+    </div>
+</div>
+
 </template>
 
 <script>
-import { Carousel, Slide } from 'vue-carousel'
 import axios from '@/util.js'
 export default {
     name: 'HotPlace',
     components:{
-        Carousel,
-        Slide,
     },
     data(){
         return{
@@ -39,7 +42,18 @@ export default {
     },
     methods:{
         moveToSearch(sidoCode, gugunCode, category, keyword){
-            this.$router.push({name: 'RegionSearch', query:{sidoCode, gugunCode,category, keyword}});
+            console.log(gugunCode)
+            let selectedData = {
+                sidoCode,
+                gugunCode,
+                category,
+                keyword,
+            };
+            console.log(sidoCode)
+            console.log(category)
+            console.log(keyword)
+            console.log("?")
+            this.$emit('selectedData', selectedData);
         }
     }
 }
@@ -50,24 +64,36 @@ export default {
 img{
     width:100%;
     height:200px;
+    image-rendering: -webkit-optimize-contrast;
+    transform:translateZ(0);
+    backface-visibility:hidden;
 }
-h2{
+
+h2, h3{
     text-align:left;
     padding-left: 10px;
 }
-
-.hotplace:hover{
-    cursor:pointer;
+h2{
+    font-size:20px;
 }
-.hotplace p{
-    font-size:18px;
+div{
+    margin-bottom: 10px;
 }
-.hotplace_item{
-    padding:10px;
-    padding-bottom: 30px;
-    border : 1px solid rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-    height:300px;
+.hotplace{
+    height: calc(100vh - 300px);
+    overflow:auto;
 }
-
+.hotplace-title{
+    padding: 15px 0;
+}
+.hotplace-content{
+    padding:0 10px;
+}
+.hotplace::-webkit-scrollbar{
+    width: 10px;
+}
+.hotplace::-webkit-scrollbar-thumb{
+    background-color: rgba(0, 0, 0, .3);
+    border-radius:10px;
+}
 </style>

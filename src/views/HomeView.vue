@@ -10,17 +10,14 @@
         </div>
       </section>
     </main>
-    <hot-place></hot-place>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HotPlace from '@/components/region/HotPlace'
 export default {
   name: 'HomeView',
   components: {
-    HotPlace,
   },
   methods:{
     handleScroll(){

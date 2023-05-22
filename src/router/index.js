@@ -8,7 +8,7 @@ Vue.use(VueCarousel)
 
 const onlyAuthUser = async (to, from, next) => {
   const isLogin = store.getters["userStore/getLoginState"];
-  if
+  // if
   let token = sessionStorage.getItem("access-token");
   console.log("로그인 처리 전", checkUserInfo, token);
 

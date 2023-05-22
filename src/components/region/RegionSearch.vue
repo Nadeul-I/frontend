@@ -13,24 +13,16 @@
                     <option :value="0" selected>구군 선택</option>
                     <option v-for="gugun in gugunData" :key="gugun.gugunCode" :value="gugun.gugunCode" >{{gugun.gugunName}}</option>
                 </select>
-                <select id="category" v-model="category">
-                    <option value="0" selected>카테고리 선택</option>
-                    <option value="12">관광지</option>
-                    <option value="14">문화시설</option>
-                    <option value="15">축제공연행사</option>
-                    <option value="25">여행코스</option>
-                    <option value="28">레포츠</option>
-                    <option value="32">숙박</option>
-                    <option value="38">쇼핑</option>
-                    <option value="39">음식점</option>
-                </select>
-                <input type="text" id="search-btn" v-model="keyword" placeholder="키워드 입력"/>
-                <input type="button" @click="search()" value="검색"/>    
+                <div id="search-form">
+                    <font-awesome-icon :icon="['fas', 'magnifying-glass']" style="color: #5c98ff;" @click="search()" />
+                    <input type="text" id="search-btn"  v-model="keyword" placeholder="키워드 입력"/>
+                </div>
                 </form> 
             </div>
             <div class="notice">
-                
+                공지사항
             </div>
+            <hot-place @selectedData="getMapInfo"></hot-place>
         </div>
             <div class="toggle-btn" v-if="searchToggleBtn">
                 <input type="button" value=">>" @click="searchToggle()"/>
@@ -38,6 +30,13 @@
             <div class="toggle-btn" v-else>
                 <input type="button" value="<<" @click="searchToggle()"/>
             </div>
+            <div class="detail-option" v-if="!searchToggleBtn">
+                <div v-for="cat in catList" :key="cat.catNum" @click="catChange(cat.catNum)" :tabindex="cat.catNum">
+                    <font-awesome-icon v-if="cat.catNum!=0" :icon="['fas', cat.icon]" :style="{color: `${cat.style}`}" />
+                    <label>{{cat.name}}</label>
+                </div>
+            </div>
+            
             <the-map :mapData="mapData" ></the-map>
     </div>
 </div>
@@ -45,11 +44,13 @@
 
 <script>
 import TheMap from '@/components/region/TheMap.vue';
+import HotPlace from '@/components/region/HotPlace.vue';
 import { sidoList, gugunList, regionSearch } from '@/api/region';
 
 export default {
     components:{
         TheMap,
+        HotPlace,
     },
     data(){
         return{
@@ -61,15 +62,27 @@ export default {
             gugunData: [],
             mapData:[],
             searchToggleBtn: true,
+            catList:[
+                {catNum:0, icon:'', style:'', name:'미선택'},
+                {catNum:12, icon:'plane', style:'#4d9aff', name: '관광지'},
+                {catNum:14, icon:'landmark', style:'#90f4c5', name: '문화시설'},
+                {catNum:15, icon:'clapperboard', style:'#fda43f', name: '축제공연행사'},
+                {catNum:25, icon:'person-hiking', style:'#9494ff', name: '여행코스'},
+                {catNum:28, icon:'baseball', style:'#ff7b00', name: '레포츠'},
+                {catNum:32, icon:'hotel', style:'#d84dff', name: '숙박'},
+                {catNum:38, icon:'cart-shopping', style:'#ff4f42', name: '쇼핑'},
+                {catNum:39, icon:'utensils', style:'#33f1ff', name: '음식점'},
+            ]
         }
     },
     created(){
-        if(this.$route.query.sidoCode){
-            this.sidoCode= this.$route.query.sidoCode,
+        if(this.$route.params.sidoCode){
+            this.sidoCode= this.$route.params.sidoCode,
             this.changeGugun()
-            this.gugunCode= this.$route.query.gugunCode,
-            this.category= this.$route.query.category,
-            this.keyword= this.$route.query.keyword,
+            this.gugunCode= this.$route.params.gugunCode,
+            this.category= this.$route.params.category,
+            this.keyword= this.$route.params.keyword,
+            console.log(this.category)
             this.mapData=[{
                 sidoCode : this.sidoCode,
                 gugunCode : this.gugunCode,
@@ -124,6 +137,20 @@ export default {
         },
         searchToggle(){
             this.searchToggleBtn = !this.searchToggleBtn;
+        },
+        catChange(catNum){
+            this.category = catNum;
+        },
+        getMapInfo(mapInfo){
+            this.sidoCode = mapInfo.sidoCode;
+            console.log(this.sidoCode == mapInfo.sidoCode)
+            this.gugunCode = mapInfo.gugunCode;
+            console.log(this.gugunCode == mapInfo.gugunCode);
+            this.category = mapInfo.category;
+            console.log(this.category)
+            console.log(this.category == mapInfo.category)
+            this.keyword = mapInfo.keyword;
+            this.search()
         }
     }
 }
@@ -138,7 +165,10 @@ export default {
     font-weight: normal;
     font-style: normal;
 }
-
+.lump{
+    height:89px;
+    background-color:black;
+}
 .search{
     display: flex;
     flex-direction:row;
@@ -148,6 +178,7 @@ export default {
 .search-info{
     padding: 20px;
     z-index:1;
+    height:calc(100vh - 89px);
 }
 .search-info form{
     display:flex;
@@ -168,12 +199,21 @@ export default {
 .region > *{
     margin-right: 10px;
     border-radius: 5px;
+
 }
+
 .region select{
-    width:200px;
-    height: 30px;
+    -webkit-appearance:none; /* 크롬 화살표 없애기 */
+    -moz-appearance:none; /* 파이어폭스 화살표 없애기 */
+    appearance:none; /* 화살표 없애기 */
+    width:100%;
+    height: 40px;
     text-align : center;
+    border: 1px solid #5c98ff;
+    border-radius: 5px;
+    margin-bottom: 5px;
 }
+
 .region #search-btn{
     border-radius: 10px;
 }
@@ -194,8 +234,67 @@ input[type="text"]{
     padding-left: 20px;
     border : 2px solid gray;
 }
-.lump{
-    height:89px;
-    background-color:black;
+
+#search-form{
+    display:flex;
+    justify-content: center;
+    align-items:center;
+    flex-direction: row-reverse;
+    border: 3px solid #5c98ff;
+    border-radius: 5px;
+    padding:5px 12px;
+}
+#search-form input{
+    border: 0;
+}
+#search-form input:focus, .region select:focus{
+    outline:none;
+}
+.notice{
+    padding: 10px;
+    border-bottom : 1px solid rgba(0, 0, 0, 0.1);
+}
+.detail-option{
+    position:absolute;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    width:60%;
+    background-color: white;
+    left:380px;
+    padding: 10px;
+    top:100px;
+    border: 1px solid rgba(0, 0, 0, .05);
+    border-radius: 4px;
+    z-index: 2;
+}
+.detail-option div{
+    padding:10px 5px;
+    width: calc(100% / 8);
+    display:flex;
+    flex-direction:row;
+    justify-content: center;
+    align-items:center;
+    padding-right:11px;
+    border-radius:5px;
+}
+.detail-option div:focus{
+    border: 1px solid #5c98ff;
+}
+.detail-option div img{
+    width:20px;
+    height: 20px;
+}
+.detail-option *{
+    cursor:pointer;
+    margin-right:2px;
+}
+
+.hotplace-list{
+    border:1px solid black;
+    overflow:scroll;
+}
+hot-place{
+    overflow:scroll;
 }
 </style>
