@@ -84,6 +84,35 @@
                 </span>
             </div>
 
+            <div>
+                <div>12312312312</div>
+                <div>12312312312</div>
+                <div>12312312312</div>
+                <div>12312312312</div>
+                <div>12312312312</div>
+                <div>12312312312</div>
+                <div>12312312312</div>
+                <div>12312312312</div>
+                <div>12312312312</div>
+                <div>12312312312</div>
+                <div>12312312312</div>
+                <div>12312312312</div>
+                <div>12312312312</div>
+                <div>12312312312</div>
+                <div>12312312312</div>
+                <div>12312312312</div>
+                <div>12312312312</div>
+                <div>12312312312</div>
+                <div>12312312312</div>
+                <div>12312312312</div>
+                <div>12312312312</div>
+                <div>12312312312</div>
+                <div>12312312312</div>
+                <div>12312312312</div>
+                <div>12312312312</div>
+            </div>
+
+
             <form id="board-list-list" method="get" action="${root}/board/list">
                 <input type="hidden" id="pgno" name="pgno" value="" />
                 <input type="hidden" name="search" value="${search}" />
@@ -119,6 +148,7 @@ export default {
     created(){
         boardList(
             ({data}) => {
+                console.log("11111111111111");
                 this.navigation = data.navigation;
                 data.boards.map((item) => {this.boards.push(item)});
                 for(let i=1; i<=this.navigation.endPage; i++){
@@ -143,11 +173,9 @@ export default {
 
 <style >
 .board-list-main{
-    position:absolute;
     margin: auto;
     width:100%;
     background: white;
-    border-radius : 10px;
 }
 
 .board-list-container {
@@ -250,25 +278,25 @@ export default {
 }
 
 .page-link{
-	background-color:transparent;
-	cursor:pointer;
-	color:#7cacde;
+    background-color:transparent;
+    cursor:pointer;
+    color:#7cacde;
     border-bottom:0px;
-	font-family:Arial;
-	font-size:16px;
-	font-weight:bold;
-	text-decoration:none;
+    font-family:Arial;
+    font-size:16px;
+    font-weight:bold;
+    text-decoration:none;
     margin:5px 10px;
     padding-bottom:5px;
-	text-shadow:0px 1px 0px #7cacde;
+    text-shadow:0px 1px 0px #7cacde;
 }
 
 .page-link:hover {
     border-bottom: 1px solid #14396a;
-	transition: border-bottom 0.5s ease-in;
+    transition: border-bottom 0.5s ease-in;
 }
 .page-link:active {
-	position:relative;
-	top:1px;
+    position:relative;
+    top:1px;
 }
 </style>

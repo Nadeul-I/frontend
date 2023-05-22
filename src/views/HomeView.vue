@@ -57,7 +57,7 @@ export default {
 
 @media (max-width: 980px) {
   .section1-title p {
-    font-size: 2rem;
+    font-size:  rem;
     margin: 1rem 0;
   }
 }

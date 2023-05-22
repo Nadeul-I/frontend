@@ -1,5 +1,6 @@
 <template>
 <div>
+<div class="lump"></div>
 <div class="center">
     <h1>지역별 여행지 검색</h1>
         <form method="GET" action="search">
@@ -180,5 +181,18 @@ input[type="button"]{
 input[type="text"]{
     padding-left: 20px;
     border : 2px solid gray;
+}
+.header-container {
+  border-bottom: 0.1px solid rgba(0, 0, 0, 0.3) !important;
+  background-color: black !important;
+}
+
+.header-container a {
+  color: rgb(153, 0, 255);
+  transition: 0.4s;
+}
+.lump{
+    height:89px;
+    background-color:black;
 }
 </style>
