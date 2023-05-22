@@ -57,17 +57,13 @@ export default {
 
 <style>
 .board-view-main{
-    position:absolute;
-    top : 40%;
-    left : 50%;
-    transform : translate(-50%, -50%);
-    width:80%;
-    background: white;
-    border-radius : 10px;
-}
-.board-view-container{
-    width: 80%;
     margin: auto;
+    width:100%;
+    background: white;
+}
+.board-view-container {
+  width: 1200px;
+  margin: auto;
 }
 
 .board-view-header{

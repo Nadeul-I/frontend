@@ -22,7 +22,10 @@
 </template>
 
 <script>
-import axios from '@/util.js';
+//import { mapState, mapActions } from "vuex";
+
+//const userStore = "userStore";
+
 export default {
     name: "SignIn",
     data(){
@@ -32,20 +35,7 @@ export default {
         }
     },
     methods:{
-        async signin(){
-            await axios.post('/user/signin', {
-                userId: this.userId,
-                userPwd: this.userPwd
-            }).then(({data}) => {
-                if(data.message==='success'){
-                    alert('로그인 성공')
-                    this.$router.push({name: 'home'})
-                }else alert('로그인 실패')
-            })
-            .catch((data) => {
-                console.log(data) 
-                console.log(" 전송됨?")});
-        },
+        
         signup(){
             this.$router.push('/user/signup')
         },

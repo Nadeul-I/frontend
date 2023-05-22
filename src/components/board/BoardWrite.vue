@@ -65,13 +65,9 @@ export default {
 
 <style>
 .board-write-main{
-    position:absolute;
-    top : 55%;
-    left : 48%;
-    transform : translate(-50%, -50%);
-    width:80%;
+    margin: auto;
+    width:100%;
     background: white;
-    border-radius : 10px;
 }
 .board-write-container {
   width: 1200px;

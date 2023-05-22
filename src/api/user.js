@@ -2,19 +2,29 @@ import { apiInstance } from './index.js'
 
 const api = apiInstance();
 
-function SignIn(userInfo, success, fail) {
-    api.post('/user/signin', JSON.stringify(userInfo)).then(success).catch(fail);
+// 아이디 중복 체크
+async function IdCheck(userInfo, success, fail) {
+    await api.post(`/user/idcheck`, JSON.stringify(userInfo)).then(success).catch(fail);
 }
 
-function IdCheck(userInfo, success, fail) {
-    api.post(`/user/idcheck`, JSON.stringify(userInfo)).then(success).catch(fail);
+// 비밀번호 찾기
+async function FindPwd(userInfo, success, fail) {
+    await api.post(`/user/findpwd`, JSON.stringify(userInfo)).then(success).catch(fail);
 }
 
-function SignUp(userInfo, success, fail) {
-    api.post(`/user`, JSON.stringify(userInfo)).then(success).catch(fail);
+// 회원 가입
+async function SignUp(userInfo, success, fail) {
+    await api.post(`/user/signup`, JSON.stringify(userInfo)).then(success).catch(fail);
 }
 
-function FindPwd(userInfo, success, fail) {
-    api.post(`/user/findpwd`, JSON.stringify(userInfo)).then(success).catch(fail);
+// 회원 탈퇴
+async function Withdraw(userId, success, fail){
+    await api.delete(`/user/withdraw/${userId}`).then(success).catch(fail);
 }
-export { SignIn, IdCheck, SignUp, FindPwd }
+
+// 회원 정보 수정
+async function userModify(userInfo, success, fail){
+    await api.put(`/user/modify`, JSON.stringify(userInfo)).then(success).catch(fail);
+}
+
+export {IdCheck, FindPwd, SignUp, Withdraw, userModify }
