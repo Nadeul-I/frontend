@@ -162,4 +162,7 @@ export default {
     height:89px;
 
 }
+img{
+    
+}
 </style>
