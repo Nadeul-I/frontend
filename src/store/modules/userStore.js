@@ -1,4 +1,5 @@
-import { logout } from "@/api/user";
+import jwtDecode from "jwt-decode";
+import { signIn, logout, tokenCheck } from "@/api/auth";
 
 const userStore = {
   namespaced: true,
@@ -16,36 +17,120 @@ const userStore = {
   },
   mutations: {
     SET_USER_STATE: (state, userId) => {
-      if(userId){
+      if (userId) {
         state.isLogin = true;
         state.userId = userId;
-      }
-      else{
+      } else {
         state.isLogin = false;
         state.userId = "";
       }
     },
   },
   actions: {
-    
-
-    async userLogout({ commit }, userid) {
-      await logout(
-        userid,
+    //유저 로그인
+    async userLogin({ state, commit }, userInfo) {
+      await signIn(
+        userInfo,
         ({ data }) => {
           if (data.message === "success") {
-            commit("SET_IS_LOGIN", false);
-            commit("SET_USER_INFO", null);
-            commit("SET_IS_VALID_TOKEN", false);
+            let accessToken = data["access-token"];
+            let refreshToken = data["refresh-token"];
+
+            console.log("login success token created!!!! >> ", accessToken, refreshToken);
+
+            let userId = jwtDecode(accessToken).userId;
+            
+            commit("SET_USER_STATE", userId);
+
+            console.log(userId);
+            console.log(state.isLogin);
+
+            sessionStorage.setItem("access-token", accessToken);
+            sessionStorage.setItem("refresh-token", refreshToken);
+
+            this.$router.push('/');
           } else {
-            console.log("유저 정보 없음!!!!");
+            commit("SET_USER_STATE", "");
+            sessionStorage.removeItem("access-token");
+            sessionStorage.removeItem("refresh-token");
           }
         },
         (error) => {
+          commit("SET_USER_STATE", "");
+          sessionStorage.removeItem("access-token");
+          sessionStorage.removeItem("refresh-token");
           console.log(error);
         }
       );
     },
+
+    // 유저 로그아웃
+    async userLogout({ commit }, userId) {
+      await logout(
+        userId,
+        ({ data }) => {
+          if (data === "fail") {
+            console.log("유저정보 x");
+          }
+          commit("SET_USER_STATE", "");
+          sessionStorage.removeItem("access-token");
+          sessionStorage.removeItem("refresh-token");
+        },
+        (error) => {
+          commit("SET_USER_STATE", "");
+          sessionStorage.removeItem("access-token");
+          sessionStorage.removeItem("refresh-token");
+          console.log(error);
+        }
+      );
+    },
+
+    // 토큰 인증
+    async userAuthCheck({ commit }) {
+      await tokenCheck(
+        true,
+        ({data}) =>{
+          if (data.message === "success") {
+            let accessToken = data["access-token"];
+            let refreshToken = data["refresh-token"];
+  
+            let userId = jwtDecode(accessToken).userId;
+
+            commit("SET_USER_STATE", userId);
+
+            sessionStorage.setItem("access-token", accessToken);
+            sessionStorage.setItem("refresh-token", refreshToken);
+          }
+        },
+        async(error) =>{
+          console.log(error);
+          await tokenCheck(
+            false,
+            ({data}) =>{
+              if (data.message === "success") {
+                let accessToken = data["access-token"];
+                let refreshToken = data["refresh-token"];
+      
+                let userId = jwtDecode(accessToken).userId;
+
+                commit("SET_USER_STATE", userId);
+
+                sessionStorage.setItem("access-token", accessToken);
+                sessionStorage.setItem("refresh-token", refreshToken);
+              }
+            },
+            (error) =>{
+              commit("SET_USER_STATE", "");
+              sessionStorage.removeItem("access-token");
+              sessionStorage.removeItem("refresh-token");
+              console.log(error);
+            }
+          )
+        }
+
+      )
+    },
+
   },
 };
 

@@ -15,7 +15,7 @@
 export default {
   data() {
     return {
-      images: ["carousel1.jpg", "carousel2.jpg", "carousel3.jpg"],
+      images: ["carousel1.jpg", "carousel2.jpg", "carousel3.jpg",  "carousel4.jpg", "carousel5.jpg", "carousel6.jpg", "carousel7.jpg"],
       idx: 0,
       timer: null,
     };
@@ -25,7 +25,7 @@ export default {
   },
   methods: {
     startRotation: function () {
-      this.timer = setInterval(this.next, 5000);
+      this.timer = setInterval(this.next, 3000);
     },
     next: function () {
       this.idx = (this.idx + 1) % this.images.length;
@@ -42,7 +42,7 @@ export default {
   height: 320px;
   width: 100%;
   position: relative;
-  margin-bottom: 3rem;
+  margin-bottom: 1rem;
 }
 
 .side-carousel-container img {

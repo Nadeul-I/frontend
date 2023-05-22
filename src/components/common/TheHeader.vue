@@ -5,35 +5,31 @@
       <div>
         <ul class="header-inner">
           <li><a href="">공지사항</a></li>
-          <router-link :to="{name: 'RegionSearch'}">여행지 검색</router-link>
+          <router-link :to="{ name: 'RegionSearch' }">여행지 검색</router-link>
           <router-link to="maptest">여행 계획</router-link>
           <!-- <li><a href="${root }/board/list?pgno=1&search=&word=">여행 후기</a></li> -->
           <router-link :to="{ name: 'Board' }">자유 게시판</router-link>
         </ul>
       </div>
       <div>
-        <ul class="header-inner" v-if="!token">
+        <ul class="header-inner" v-if="!isLogin">
           <li><router-link :to="{ name: 'SignIn' }">로그인</router-link></li>
           <li><router-link :to="{ name: 'SignUp' }">회원가입</router-link></li>
         </ul>
         <ul class="header-inner" v-else>
-          <li><router-link to="mypage">마이페이지</router-link></li>
-          <li><router-link to="logout">로그아웃</router-link></li>
+          <li><router-link to="/">마이페이지</router-link></li>
+          <li><a @click.prevent="onClickLogout"></a> 로그아웃</li>
         </ul>
       </div>
-
-      <!--
-    <input type="checkbox" id="nav-menu" />
-    <label class="hamburger" for="nav-menu">
-      <span></span>
-      <span></span>
-      <span></span>
-    </label>
-    --></nav>
+    </nav>
   </header>
 </template>
 
 <script>
+import { mapState, mapGetters, mapActions } from "vuex";
+
+const userStore = "userStore";
+
 export default {
   name: "TheHeader",
   data() {
@@ -41,6 +37,16 @@ export default {
       token: false,
     };
   },
+  computed: {
+    ...mapState(userStore, ["isLogin", "userId"]),
+    ...mapGetters(userStore, ["getLoginState", "getUserId"]),
+  },
+  methods:{
+    ...mapActions(userStore, ["userLogout"]),
+    async onClickLogout(){
+      await this.userLogout(this.getUserId);
+    }
+  }
 };
 
 window.onscroll = function () {
@@ -72,7 +78,7 @@ function navScroll() {
   font-size: 1.5rem;
   transition: 0.4s;
   z-index: 1;
-  height:90px;
+  height: 90px;
 }
 
 .header-container a {

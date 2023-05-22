@@ -14,7 +14,7 @@
             </div>
             <div class="find" id="find" @click="findpwd()">비밀번호를 잊으셨나요?</div>
             <div class="input">
-                <input type="submit" id="login" value="로그인" />
+                <input type="button" @click="onClickLogin" value="로그인" />
                 <input type="button" @click="signup()" id="signupBtn" value="회원가입">
             </div>	
         </form>
@@ -22,9 +22,9 @@
 </template>
 
 <script>
-//import { mapState, mapActions } from "vuex";
+import { mapActions } from "vuex";
 
-//const userStore = "userStore";
+const userStore = "userStore";
 
 export default {
     name: "SignIn",
@@ -35,7 +35,11 @@ export default {
         }
     },
     methods:{
-        
+        ...mapActions(userStore, ["userLogin"]),
+        async onClickLogin(){
+            await this.userLogin({userId : this.userId, userPwd : this.userPwd});
+        },
+
         signup(){
             this.$router.push('/user/signup')
         },
