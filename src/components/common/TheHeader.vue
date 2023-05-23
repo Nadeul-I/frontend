@@ -8,7 +8,7 @@
           <router-link :to="{ name: 'RegionSearch' }">여행지 검색</router-link>
           <router-link to="maptest">여행 계획</router-link>
           <!-- <li><a href="${root }/board/list?pgno=1&search=&word=">여행 후기</a></li> -->
-          <router-link :to="{ name: 'Board' }">자유 게시판</router-link>
+          <a @click.prevent="onClickBoardReset()">자유 게시판</a>
         </ul>
       </div>
       <div>
@@ -26,9 +26,11 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from "vuex";
+import router from "@/router/index.js"
+import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 
 const userStore = "userStore";
+const boardStore = "boardStore";
 
 export default {
   name: "TheHeader",
@@ -43,9 +45,17 @@ export default {
   },
   methods:{
     ...mapActions(userStore, ["userLogout"]),
+    ...mapMutations(boardStore, ["SET_BOARD_INIT"]),
     async onClickLogout(){
       await this.userLogout(this.getUserId);
+    },
+
+    onClickBoardReset(){
+      this.SET_BOARD_INIT();
+      router.push('/board');
     }
+
+
   }
 };
 

@@ -80,7 +80,13 @@ const userStore = {
         }
       );
 
-      router.push('/');
+      if(router.currentRoute.fullPath != '/'){
+        router.push('/');
+      }
+      else{
+        router.go(0);
+      }
+      
     },
 
     // 토큰 인증

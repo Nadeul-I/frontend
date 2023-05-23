@@ -116,6 +116,7 @@ export default {
   created() {
     boardList(
       ({ data }) => {
+        console.log(data);
         this.navigation = data.navigation;
         data.boards.map((item) => {
           this.boards.push(item);

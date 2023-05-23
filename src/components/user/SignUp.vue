@@ -124,7 +124,7 @@ export default {
                 ()=>console.log('실패'))
         }   ,
         signin(){
-            this.$router.push('/signin')
+            this.$router.push('/')
         }
     }
 }

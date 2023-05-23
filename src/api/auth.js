@@ -17,7 +17,6 @@ async function tokenCheck(token, success, fail) {
     if(token){
         console.log(sessionStorage.getItem("access-token"));
         api.defaults.headers["access-token"] = sessionStorage.getItem("access-token");
-        console.log( api.defaults.headers["access-token"])
     }
     else{
         console.log(sessionStorage.getItem("refresh-token"));
