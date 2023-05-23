@@ -14,5 +14,8 @@ function regionSearch(sidoInfo, success, fail) {
     api.get(`/region/search/${sidoInfo.sidoCode}/${sidoInfo.gugunCode}/${sidoInfo.category}/${sidoInfo.keyword}/`)
         .then(success).catch(fail);
 }
+function hotPlace(success, fail) {
+    api.get(`/region/hotplace`).then(success).catch(fail);
+}
 
-export { sidoList, gugunList, regionSearch }
+export { sidoList, gugunList, regionSearch, hotPlace }

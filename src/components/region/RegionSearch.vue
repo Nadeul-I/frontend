@@ -24,19 +24,21 @@
             </div>
             <hot-place @selectedData="getMapInfo"></hot-place>
         </div>
-            <div class="toggle-btn" v-if="searchToggleBtn">
-                <input type="button" value=">>" @click="searchToggle()"/>
-            </div>
-            <div class="toggle-btn" v-else>
-                <input type="button" value="<<" @click="searchToggle()"/>
-            </div>
+        <div class="open-info">
+            <div class="bar"/>
+            <span>
+                <font-awesome-icon :icon="['fas', 'caret-right']" style="color: #427bff;" v-if="searchToggleBtn" @click="searchToggle()" class="toggle-btn"/>
+                <font-awesome-icon :icon="['fas', 'caret-left']"  style="color: #427bff;" v-else @click="searchToggle()" class="toggle-btn"/>
+            </span>
+        </div>
+        <div>
             <div class="detail-option" v-if="!searchToggleBtn">
                 <div v-for="cat in catList" :key="cat.catNum" @click="catChange(cat.catNum)" :tabindex="cat.catNum">
                     <font-awesome-icon v-if="cat.catNum!=0" :icon="['fas', cat.icon]" :style="{color: `${cat.style}`}" />
                     <label>{{cat.name}}</label>
                 </div>
             </div>
-            
+        </div>
             <the-map :mapData="mapData" ></the-map>
     </div>
 </div>
@@ -66,7 +68,7 @@ export default {
                 {catNum:0, icon:'', style:'', name:'미선택'},
                 {catNum:12, icon:'plane', style:'#4d9aff', name: '관광지'},
                 {catNum:14, icon:'landmark', style:'#90f4c5', name: '문화시설'},
-                {catNum:15, icon:'clapperboard', style:'#fda43f', name: '축제공연행사'},
+                {catNum:15, icon:'clapperboard', style:'#fda43f', name: '공연행사'},
                 {catNum:25, icon:'person-hiking', style:'#9494ff', name: '여행코스'},
                 {catNum:28, icon:'baseball', style:'#ff7b00', name: '레포츠'},
                 {catNum:32, icon:'hotel', style:'#d84dff', name: '숙박'},
@@ -82,7 +84,6 @@ export default {
             this.gugunCode= this.$route.params.gugunCode,
             this.category= this.$route.params.category,
             this.keyword= this.$route.params.keyword,
-            console.log(this.category)
             this.mapData=[{
                 sidoCode : this.sidoCode,
                 gugunCode : this.gugunCode,
@@ -142,15 +143,14 @@ export default {
             this.category = catNum;
         },
         getMapInfo(mapInfo){
+            // map 에 그리기.
             this.sidoCode = mapInfo.sidoCode;
-            console.log(this.sidoCode == mapInfo.sidoCode)
             this.gugunCode = mapInfo.gugunCode;
-            console.log(this.gugunCode == mapInfo.gugunCode);
             this.category = mapInfo.category;
-            console.log(this.category)
-            console.log(this.category == mapInfo.category)
             this.keyword = mapInfo.keyword;
             this.search()
+            // search option 변경
+
         }
     }
 }
@@ -218,10 +218,24 @@ export default {
 .region #search-btn{
     border-radius: 10px;
 }
-.region .toggle-btn{
-    padding: 0;
-    margin:0;
+.open-info{
+    z-index: 20;
+    width:0;
+    border-collapse:collapse; 
 }
+.bar{
+    font-size:16px;
+    height: 45%;
+}
+.toggle-btn{
+    background-color:white;
+    width:10px;
+    height:20px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    padding:10px;
+}
+
 input{
 	padding:6px;
 }
@@ -271,12 +285,11 @@ input[type="text"]{
 }
 .detail-option div{
     padding:10px 5px;
-    width: calc(100% / 8);
+    width: 120px;
     display:flex;
     flex-direction:row;
     justify-content: center;
     align-items:center;
-    padding-right:11px;
     border-radius:5px;
 }
 .detail-option div:focus{
@@ -298,4 +311,5 @@ input[type="text"]{
 hot-place{
     overflow:scroll;
 }
+
 </style>

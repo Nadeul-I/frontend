@@ -88,6 +88,7 @@ function navScroll() {
 
 .header-nav {
   max-width: 1280px;
+  min-width: 900px;
   margin: 2rem auto 2rem auto;
   padding: 0 40px;
   display: flex;
