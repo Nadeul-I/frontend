@@ -119,7 +119,7 @@ export default {
         },
         
         
-    }
+    }   
 }
 </script>
 <style >
@@ -162,7 +162,5 @@ export default {
     height:89px;
 
 }
-img{
-    
-}
+
 </style>

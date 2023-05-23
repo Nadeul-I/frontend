@@ -18,7 +18,7 @@
         </ul>
         <ul class="header-inner" v-else>
           <li><router-link to="/">마이페이지</router-link></li>
-          <li><a @click.prevent="onClickLogout"></a> 로그아웃</li>
+          <li><a @click.prevent="onClickLogout()">로그아웃</a></li>
         </ul>
       </div>
     </nav>
@@ -108,5 +108,8 @@ function navScroll() {
 .header-container a:hover {
   color: rgb(153, 0, 255);
   transition: 0.4s;
+}
+a{
+  cursor:pointer;
 }
 </style>

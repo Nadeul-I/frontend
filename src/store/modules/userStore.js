@@ -1,6 +1,6 @@
 import jwtDecode from "jwt-decode";
 import { signIn, logout, tokenCheck } from "@/api/auth";
-
+import router from "@/router/index.js"
 const userStore = {
   namespaced: true,
   state: {
@@ -44,11 +44,12 @@ const userStore = {
 
             console.log(userId);
             console.log(state.isLogin);
+            console.log(accessToken)
 
             sessionStorage.setItem("access-token", accessToken);
             sessionStorage.setItem("refresh-token", refreshToken);
 
-            this.$router.push('/');
+            router.push('/');
           } else {
             commit("SET_USER_STATE", "");
             sessionStorage.removeItem("access-token");

@@ -1,7 +1,7 @@
 <template>
    <div class="center">
         <h1>로그인</h1>
-        <form @submit.prevent="signin()">
+        <form @submit.prevent="onClickLogin()">
             <div class="input">
                 <input type="text" name="userId" v-model="userId" required/>
                 <span></span>

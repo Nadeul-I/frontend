@@ -174,6 +174,7 @@ export default {
     flex-direction:row;
     justify-content: center;
     height:calc(100vh - 90px);
+    overflow:hidden;
 }
 .search-info{
     padding: 20px;
