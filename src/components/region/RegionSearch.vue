@@ -145,6 +145,7 @@ export default {
         getMapInfo(mapInfo){
             // map 에 그리기.
             this.sidoCode = mapInfo.sidoCode;
+            this.changeGugun()
             this.gugunCode = mapInfo.gugunCode;
             this.category = mapInfo.category;
             this.keyword = mapInfo.keyword;
@@ -180,6 +181,7 @@ export default {
     padding: 20px;
     z-index:1;
     height:calc(100vh - 89px);
+    width:30%;
 }
 .search-info form{
     display:flex;
@@ -304,10 +306,6 @@ input[type="text"]{
     margin-right:2px;
 }
 
-.hotplace-list{
-    border:1px solid black;
-    overflow:scroll;
-}
 hot-place{
     overflow:scroll;
 }

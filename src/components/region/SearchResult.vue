@@ -1,39 +1,41 @@
 <template>
-<div class="search">
+<div class="hotplace">
+    <div class="hotplace-title">
+        
+    </div>
     <!-- 제목, 타입, like, 위치, 연락처, 길찾기 -->
-    <div class="search-content" v-for="search in searchList" :key="search.keyword" @click="moveToSearch(search.sidoCode, search.gugunCode, search.contentTypeId, search.title)">
-        <div class="search-content-id">
+    <div class="hotplace-content" v-for="hotplace in searchList" :key="hotplace.keyword" >
+        <div class="hotplace-content-id" @click="moveToSearch(hotplace.sidoCode, hotplace.gugunCode, hotplace.contentTypeId, hotplace.title)">
             <div>
-                <span id="title">{{search.title}}</span>
-                <span id="content-type">{{search.contentTypeId}}</span>
+                <span id="title">{{hotplace.title}}</span>
+                <span id="content-type">{{hotplace.contentTypeId}}</span>
             </div>
-            <div class="search-content-address">
-                {{search.addr1}}
+            <div class="hotplace-content-address">
+                {{hotplace.addr1}}
             </div>
         </div>
-        <div class="search-content-desc">
-            <div class="search-content-left">
-                <div class="search-content-like">
+        <div class="hotplace-content-desc">
+            <div class="hotplace-content-left">
+                <div class="hotplace-content-like">
                     <font-awesome-icon :icon="['fas', 'heart']" style="color: #e9010193;" />
-                    <span id="search-content-count">{{search.readCount}}</span>
+                    <span id="hotplace-content-count">{{hotplace.readCount}}</span>
                 </div>
-                <div class="search-content-tel">
-                    {{search.tel==''?'연락처 정보 없음':search.tel}}
+                <div class="hotplace-content-tel">
+                    {{hotplace.tel==''?'연락처 정보 없음':hotplace.tel}}
                 </div>
             </div>
-            <div class="search-content-right">
-                <div class="search-content-start">
-                    <input type="button" value="출발"/>
+            <div class="hotplace-content-right">
+                <div class="hotplace-content-start">
+                    <input type="button" value="출발" @click="setStart(hotplace.sidoCode, hotplace.gugunCode, hotplace.contentTypeId, hotplace.title)"/>
                 </div>
-                <div class="search-content-end">
-                    <input type="button" value="도착"/>
+                <div class="hotplace-content-end">
+                    <input type="button" value="도착" @click="setDest(hotplace.sidoCode, hotplace.gugunCode, hotplace.contentTypeId, hotplace.title)"/>
                 </div>
             </div>
         </div>
 
     </div>
 </div>
-
 </template>
 
 <script>
@@ -44,34 +46,47 @@ export default {
     },
     data(){
         return{
-            searchList: this.mapData,
+            searchData:{},
+            searchList: [],
             img: '@/assets/noimage.png',
         }
     },
-    created(){
-        console.log(this.searchList)
-    },
     watch:{
-        mapData(){
-            console.log(this.$props.mapData)
-            this.searchList.length=0;
-            this.searchList = this.$props.mapData;
+        mapData(data){
+            this.searchData = data;
+            this.searchList = data;
         }
     },
     methods:{
         moveToSearch(sidoCode, gugunCode, category, keyword){
-            console.log(gugunCode)
             let selectedData = {
                 sidoCode,
                 gugunCode,
                 category,
                 keyword,
-            };
-            console.log(sidoCode)
-            console.log(category)
-            console.log(keyword)
-            console.log("?")
+            }
+            console.log(selectedData)
             this.$emit('selectedData', selectedData);
+        },
+        setStart(sidoCode, gugunCode, category, keyword){
+            let startPoint = {
+                sidoCode,
+                gugunCode,
+                category,
+                keyword,
+            }
+            console.log(startPoint)
+            this.$emit('startPoint', startPoint)
+        },
+        setDest(sidoCode, gugunCode, category, keyword){
+            let endPoint = {
+                sidoCode,
+                gugunCode,
+                category,
+                keyword,
+            }
+            console.log(endPoint)
+            this.$emit('endPoint', endPoint)
         }
     }
 }
@@ -102,49 +117,52 @@ div{
     margin: 5px 0;
 }
 
-.search{
+.hotplace{
     height: calc(100vh - 300px);
     overflow:auto;
 }
-.search-title{
+.hotplace-title{
     padding: 15px 0;
 }
-.search-content{
+.hotplace-content{
     padding:10px 10px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
-.search::-webkit-scrollbar{
+.hotplace::-webkit-scrollbar{
     width: 10px;
 }
-.search::-webkit-scrollbar-thumb{
+.hotplace::-webkit-scrollbar-thumb{
     background-color: rgba(0, 0, 0, .3);
     border-radius:10px;
 }
-.search-content-id >*{
+.hotplace-content-id >*{
     padding-bottom:1px;
 }
-.search-content-desc{
+.hotplace-content-desc{
     display:flex;
     flex-direction:row;
     justify-content: space-between;
 }
-.search-content-like{
+.hotplace-content-like{
     display:flex;
     align-items:center;
 }
-.search-content-like > *{
+.hotplace-content-right{
+    z-index:3;
+}
+.hotplace-content-like > *{
     margin-right:5px;
 }
-.search-content-like span{
+.hotplace-content-like span{
     font-size:12px;
 }
-#search-content-count{
+#hotplace-content-count{
     color:#e9010193;
 }
-.search-content span{
+.hotplace-content span{
     margin-right:5px;
 }
-.search-content-address{
+.hotplace-content-address{
     font-size:12px;
     color: rgba(0, 0, 0, .6);
 }
@@ -152,11 +170,11 @@ div{
     font-size:12px;
     color: rgba(0, 0, 0, .4);
 }
-.search-content-tel{
+.hotplace-content-tel{
     font-size:12px;
     color : rgba(40, 135, 86, 0.5)
 }
-.search-content-right{
+.hotplace-content-right{
     display:flex;
     flex-direction:row;
 }

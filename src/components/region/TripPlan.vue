@@ -1,7 +1,7 @@
 <template>
 <div>
     <div class="lump"/>   
-    <div class="search" >
+    <div class="search">
         <div class="search-info" v-if="!searchToggleBtn">
             <div class="region">
                 <form method="GET" action="search">
@@ -14,19 +14,19 @@
                     <option v-for="gugun in gugunData" :key="gugun.gugunCode" :value="gugun.gugunCode" >{{gugun.gugunName}}</option>
                 </select>
                 <div id="search-form">
-                    <font-awesome-icon :icon="['fas', 'magnifying-glass']" style="color: #5c98ff;" @click="search('st')" />
+                    <font-awesome-icon :icon="['fas', 'magnifying-glass']" style="color: #5c98ff;" @click="routeSearch('st')" />
                     <input type="text" id="search-btn"  v-model="start" placeholder="출발지 검색"/>
                 </div>
                 <div id="search-form">
-                    <font-awesome-icon :icon="['fas', 'magnifying-glass']" style="color: #5c98ff;" @click="search('dest')" />
-                    <input type="text" id="search-btn"  v-model="destination" placeholder="도착지 검색"/>
+                    <font-awesome-icon :icon="['fas', 'magnifying-glass']" style="color: #5c98ff;" @click="routeSearch('dest')" />
+                    <input type="text" id="search-btn"  v-model="dest" placeholder="도착지 검색"/>
                 </div>
                 </form> 
             </div>
             <div class="notice">
                 검색 결과
             </div>
-            <search-result @selectedData="getMapInfo" :mapData="mapData"></search-result>
+            <search-result @selectedData="getMapInfo" @startPoint="setStart" @endPoint="setDest" :mapData="mapData"></search-result>
         </div>
         <div class="open-info">
             <div class="bar"/>
@@ -43,7 +43,7 @@
                 </div>
             </div>
         </div>
-            <the-map :mapData="mapData" ></the-map>
+            <the-map :mapData="mapData" :startPoint="startPoint" :destPoint="destPoint"></the-map>
     </div>
 </div>
 </template>
@@ -63,10 +63,13 @@ export default {
             gugunCode: 0,
             category: 0,
             start: "",
-            destination: "",
+            dest: "",
             sidoData: [],
             gugunData: [],
             mapData:[],
+            startPoint:[],
+            destPoint:[],
+            getMapData: false,
             searchToggleBtn: true,
             catList:[
                 {catNum:0, icon:'', style:'', name:'미선택'},
@@ -119,8 +122,29 @@ export default {
             (error) => {console.log(error)}
             )
         },
-        search(point){
-            point=='st' ? this.keyword = this.start : this.keyword = this.destination;
+        search(){
+            let sidoInfo = {
+                sidoCode : this.sidoCode,
+                gugunCode : this.gugunCode,
+                category : this.category,
+                keyword : this.keyword == "" ? "0" : this.keyword
+            }
+            regionSearch(sidoInfo, 
+            ({data}) => {
+                if(data.length==0){
+                    alert('여행지 정보가 없습니다')
+                    return
+                }else{
+                    let newData = [];
+                    data.map((item)=>{
+                        newData.push(item);
+                    })
+                    this.mapData = newData;
+                }
+            })  
+        },
+        routeSearch(point){
+            point=='st' ? this.keyword = this.start : this.keyword = this.dest;
             let sidoInfo = {
                 sidoCode : this.sidoCode,
                 gugunCode : this.gugunCode,
@@ -149,13 +173,26 @@ export default {
         },
         getMapInfo(mapInfo){
             // map 에 그리기.
+            console.log(mapInfo)
+            this.getMapData = true;
             this.sidoCode = mapInfo.sidoCode;
+            this.changeGugun();
             this.gugunCode = mapInfo.gugunCode;
             this.category = mapInfo.category;
             this.keyword = mapInfo.keyword;
             this.search()
             // search option 변경
 
+        },
+        setStart(data){
+            this.start = data.keyword;
+            this.startPoint = data;
+            console.log(this.startPoint)
+        },
+        setDest(data){
+            this.dest = data.keyword;
+            this.destPoint = data;
+            console.log(this.destPoint)
         }
     }
 }
@@ -184,7 +221,8 @@ export default {
 .search-info{
     padding: 20px;
     z-index:1;
-    height:calc(100vh - 89px);
+    height:calc(100vh - 130px);
+    width:30%;
 }
 .search-info form{
     display:flex;
@@ -307,11 +345,7 @@ input[type="text"]{
     margin-right:2px;
 }
 
-.hotplace-list{
-    border:1px solid black;
-    overflow:scroll;
-}
-hot-place{
+search-result{
     overflow:scroll;
 }
 

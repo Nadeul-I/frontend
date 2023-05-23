@@ -72,10 +72,6 @@ export default {
                 category,
                 keyword,
             };
-            console.log(sidoCode)
-            console.log(category)
-            console.log(keyword)
-            console.log("?")
             this.$emit('selectedData', selectedData);
         }
     }

@@ -8,12 +8,16 @@ export default {
     name: "TheMap",
     props:{
         mapData: Array,
+        startPoint: [],
+        destPoint: [],
     },
     data(){
         return{
             map : null,
             openedInfo : [],
             searchLink: false,
+            start: false,
+            dest: false,
         }
     },
     created(){
@@ -94,6 +98,14 @@ export default {
             })
                 
             });
+        },
+        startPoint: function(){
+            this.startPoint.sidoCode != null ? this.start=true : this.start=false
+            if(this.start && this.start==this.dest) find();
+        },
+        destPoint: function(){
+            this.destPoint.sidoCode != null ? this.dest=true : this.dest=false
+            if(this.start && this.start==this.dest) find();
         }
     },
     methods:{
