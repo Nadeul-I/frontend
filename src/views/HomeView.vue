@@ -2,7 +2,7 @@
   <div class="home">
     <main>
       <section class="section1">
-        <img src="@/assets/title_img.jpg" alt="section1 img load fail">
+        <img src="@/assets/carousel4.jpg" alt="section1 img load fail">
         <div class="section1-title">
           <p>나들이와 함께</p>
           <p>즐거운 여행을</p>

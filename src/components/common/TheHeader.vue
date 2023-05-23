@@ -46,16 +46,20 @@ export default {
   methods:{
     ...mapActions(userStore, ["userLogout"]),
     ...mapMutations(boardStore, ["SET_BOARD_INIT"]),
+
     async onClickLogout(){
       await this.userLogout(this.getUserId);
     },
 
     onClickBoardReset(){
       this.SET_BOARD_INIT();
-      router.push('/board');
-    }
-
-
+      if(router.currentRoute.fullPath != '/board/list'){
+        router.push('/board/list');
+      }
+      else{
+        router.go(0);
+      }
+    },
   }
 };
 

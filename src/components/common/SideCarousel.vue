@@ -15,7 +15,7 @@
 export default {
   data() {
     return {
-      images: ["carousel1.jpg", "carousel2.jpg", "carousel3.jpg",  "carousel4.jpg", "carousel5.jpg", "carousel6.jpg", "carousel7.jpg"],
+      images: ["carousel1.jpg", "carousel2.jpg", "carousel3.jpg",  "carousel4.jpg"],
       idx: 0,
       timer: null,
     };

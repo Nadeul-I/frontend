@@ -17,6 +17,16 @@ const onlyAuthUser = async (to, from, next) => {
     if(isLogin){
       next();
     }
+    else{
+      if(router.currentRoute.fullPath != '/user/signin'){
+        router.push({ name: "SignIn" });
+      }
+    }
+  }
+  else{
+    if(router.currentRoute.fullPath != '/user/signin'){
+      router.push({ name: "SignIn" });
+    }
   }
 };
 
@@ -56,7 +66,7 @@ const routes = [
       {
         path: 'search',
         name: 'RegionSearch',
-        // beforeEnter: onlyAuthUser,
+        beforeEnter: onlyAuthUser,
         component: () => import('@/components/region/RegionSearch')
       },
       {
@@ -101,7 +111,6 @@ const routes = [
       {
         path: 'view/:boardNo',
         name: 'BoardView',
-        beforeEnter: onlyAuthUser,
         component: () => import('@/components/board/BoardView')
       },
       {

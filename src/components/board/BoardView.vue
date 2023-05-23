@@ -5,7 +5,7 @@
                 <div>
                     <h2>자유 게시판</h2>
                 </div>
-                <button class="board-view-list-btn btn btn-list">≡ 목록가기</button>
+                <button class="board-view-list-btn btn btn-list" @click="listArticle()">≡ 목록가기</button>
             </div>
 
             <div class="board-view-title">
@@ -16,14 +16,14 @@
             <div>
                 <div class="board-view-content">{{boardInfo.boardContent}}</div>
             </div>
-            <div class="board-view-condition-container">
+            <div class="board-view-condition-container" v-if = "getUserId === boardInfo.boardId">
                 <span>
-                <button type="button" class="btn board-view-modify-btn" @click="modifyArticle()">
+                <button type="button" class="btn board-view-modify-btn" @click="modifyBoard()">
                     수정
                 </button>
                 </span>
                 <span>
-                <button type="button" class="btn board-view-delete-btn" @click="deleteArticle()">
+                <button type="button" class="btn board-view-delete-btn" @click="deleteBoard()">
                     삭제
                 </button>
                 </span>
@@ -34,6 +34,10 @@
 
 <script>
 import { boardView, boardDelete } from '@/api/board';
+import { mapGetters } from 'vuex';
+
+const userStore = "userStore";
+
 export default {
     data(){
         return{
@@ -44,13 +48,19 @@ export default {
     created(){
         boardView(this.boardNo, ({data}) => {this.boardInfo = data}, (error) => {console.log(error)})
     },
+    computed:{
+        ...mapGetters(userStore, ["getUserId"]),
+    },
     methods:{
-        deleteArticle(){
+        listBoard(){
+            
+        },
+        deleteBoard(){
             boardDelete(this.boardNo, () => this.$router.replace('/board'), (error) => {console.log(error)})
         },
-        modifyArticle(){
+        modifyBoard(){
             this.$router.replace({ name: 'BoardModify', params : {boardNo : this.boardNo}});
-        }
+        },
     }
 }
 </script>

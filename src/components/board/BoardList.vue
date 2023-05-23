@@ -6,14 +6,15 @@
           <h2>자유 게시판</h2>
         </div>
 
-        <form class="board-list-form">
+        <form class="board-list-form" @submit.prevent="submitBoardSearch()">
           <input type="hidden" name="pgno" value="${pgno}" />
           <select
             name="search"
             id="board-list-search-select"
             aria-label="검색조건"
+            v-model="search"
           >
-            <option selected>검색조건</option>
+            <option value ="" selected>검색조건</option>
             <option value="boardTitle">제목</option>
             <option value="boardId">작성자</option>
           </select>
@@ -23,6 +24,7 @@
               name="word"
               id="board-list-word"
               placeholder="검색어..."
+              v-model="word"
             />
             <button id="board-list-search-btn" type="submit">
               <img
@@ -105,9 +107,16 @@
 
 <script>
 import { boardList } from "@/api/board";
+import { mapGetters, mapMutations } from "vuex";
+
+const boardStore = "boardStore";
+
 export default {
   data() {
     return {
+      search: "",
+      word: "",
+      pgno: 1,
       boards: [],
       navigation: "",
       indexList: [],
@@ -115,8 +124,10 @@ export default {
   },
   created() {
     boardList(
+      this.getBoardSearch,
       ({ data }) => {
         console.log(data);
+        console.log(this.getBoardSearch);
         this.navigation = data.navigation;
         data.boards.map((item) => {
           this.boards.push(item);
@@ -130,13 +141,24 @@ export default {
       }
     );
   },
+  computed:{
+    ...mapGetters(boardStore, ["getBoardSearch"]),
+  },
   methods: {
+    ...mapMutations(boardStore, ["SET_BOARD_STATE"]),
+    submitBoardSearch(){
+      this.SET_BOARD_STATE({"search":this.search, "word":this.word, "pgno":1});
+      this.$router.go(0);
+    },
     boardView(boardNo) {
+      console.log("!!!!!!!!!");
       this.$router.push({ name: "BoardView", params: { boardNo: boardNo } });
     },
     moveWrite() {
       this.$router.push({ name: "BoardWrite" });
     },
+
+    
   },
 };
 </script>
@@ -182,6 +204,10 @@ h2 {
   padding: 0;
   border: 1px solid #ddd;
   height: 50px;
+}
+
+#board-list-search-btn{
+  cursor: pointer;
 }
 
 .board-list-key-container {

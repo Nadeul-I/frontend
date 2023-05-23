@@ -3,8 +3,8 @@ import { apiInstance } from "./index.js"
 const api = apiInstance();
 
 // 게시글 목록
-async function boardList(success, fail) {
-    await api.get(`/board/list`).then(success).catch(fail);
+async function boardList(boardSearch, success, fail) {
+    await api.post(`/board/list`, JSON.stringify(boardSearch)).then(success).catch(fail);
 }
 
 // 게시글 쓰기 -> 권한 체크
