@@ -14,7 +14,7 @@
             </div>
             <div class="find" id="find" @click="findpwd()">비밀번호를 잊으셨나요?</div>
             <div class="input">
-                <input type="button" @click="onClickLogin" value="로그인" />
+                <input type="button" @click="onClickLogin()" value="로그인" />
                 <input type="button" @click="signup()" id="signupBtn" value="회원가입">
             </div>	
         </form>

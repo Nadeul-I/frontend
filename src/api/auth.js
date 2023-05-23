@@ -15,9 +15,12 @@ async function logout(userId, success, fail){
 // 토큰 인증
 async function tokenCheck(token, success, fail) {
     if(token){
+        console.log(sessionStorage.getItem("access-token"));
         api.defaults.headers["access-token"] = sessionStorage.getItem("access-token");
+        console.log( api.defaults.headers["access-token"])
     }
     else{
+        console.log(sessionStorage.getItem("refresh-token"));
         api.defaults.headers["refresh-token"] = sessionStorage.getItem("refresh-token");
     }
     await api.get(`/auth/check`).then(success).catch(fail);

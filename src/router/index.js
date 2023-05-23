@@ -10,6 +10,7 @@ Vue.use(VueCarousel)
 
 const onlyAuthUser = async (to, from, next) => {
   let isLogin = store.getters["userStore/getLoginState"];
+  
   if(isLogin){
     await store.dispatch("userStore/userAuthCheck");
     isLogin = store.getters["userStore/getLoginState"];

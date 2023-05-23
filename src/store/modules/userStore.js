@@ -1,6 +1,7 @@
 import jwtDecode from "jwt-decode";
 import { signIn, logout, tokenCheck } from "@/api/auth";
 import router from "@/router/index.js"
+
 const userStore = {
   namespaced: true,
   state: {
@@ -28,7 +29,7 @@ const userStore = {
   },
   actions: {
     //유저 로그인
-    async userLogin({ state, commit }, userInfo) {
+    async userLogin({ commit }, userInfo) {
       await signIn(
         userInfo,
         ({ data }) => {
@@ -36,15 +37,9 @@ const userStore = {
             let accessToken = data["access-token"];
             let refreshToken = data["refresh-token"];
 
-            console.log("login success token created!!!! >> ", accessToken, refreshToken);
-
             let userId = jwtDecode(accessToken).userId;
             
             commit("SET_USER_STATE", userId);
-
-            console.log(userId);
-            console.log(state.isLogin);
-            console.log(accessToken)
 
             sessionStorage.setItem("access-token", accessToken);
             sessionStorage.setItem("refresh-token", refreshToken);
@@ -84,6 +79,8 @@ const userStore = {
           console.log(error);
         }
       );
+
+      router.push('/');
     },
 
     // 토큰 인증
@@ -105,6 +102,7 @@ const userStore = {
         },
         async(error) =>{
           console.log(error);
+          console.log("리프레시 호출");
           await tokenCheck(
             false,
             ({data}) =>{
