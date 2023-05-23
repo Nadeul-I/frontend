@@ -56,7 +56,7 @@ const routes = [
       {
         path: 'search',
         name: 'RegionSearch',
-        beforeEnter: onlyAuthUser,
+        // beforeEnter: onlyAuthUser,
         component: () => import('@/components/region/RegionSearch')
       },
       {
@@ -64,6 +64,16 @@ const routes = [
         name: 'HotPlace',
         component: () => import('@/components/region/HotPlace')
       },
+      {
+        path: 'tripplan',
+        name: 'TripPlan',
+        component:() => import('@/components/region/TripPlan')
+      },
+      {
+        path: 'result',
+        name: 'SearchResult',
+        component: () => import('@/components/region/SearchResult')
+      }
       // { // 추후 삭제
       //   path: 'mapTest',
       //   name: 'MapTest',
