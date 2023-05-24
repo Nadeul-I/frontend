@@ -120,6 +120,20 @@ const routes = [
         component: () => import('@/components/board/BoardModify')
       }
     ]
+  },
+  {
+    path: '/plan',
+    name: 'Plan',
+    component: () => import('@/views/AppPlan'),
+    redirect: '/plan/list',
+    children:[
+      {
+        path: 'list',
+        name: 'PlanList',
+        beforeEnter: onlyAuthUser,
+        component: () => import('@/components/plan/PlanList')
+      }
+    ]
   }
 ]
 
