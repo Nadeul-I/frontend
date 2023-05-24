@@ -9,7 +9,6 @@ async function boardList(boardSearch, success, fail) {
 
 // 게시글 쓰기 -> 권한 체크
 async function boardWrite(boardInfo, success, fail) {
-    
     await api.post(`/board/write`, JSON.stringify(boardInfo)).then(success).catch(fail);
 }
 

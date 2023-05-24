@@ -3,15 +3,15 @@ import Vuex from "vuex";
 import createPersistedState from "vuex-persistedstate";
 // module import
 import boardStore from "@/store/modules/boardStore";
-import regionStore from "@/store/modules/boardStore";
-import userStore from "./modules/userStore";
+import userStore from "@/store/modules/userStore";
+import planStore from "@/store/modules/planStore"
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   modules: {
     boardStore,
-    regionStore,
+    planStore,
     userStore,
   },
   plugins: [

@@ -18,19 +18,7 @@
         </ul>
       </div>
 
-      <div class="plan-list-write-container">
-        <span>
-          <button
-            id="plan-list-write-btn"
-            class="btn btn-write"
-            @click="moveWrite()"
-          >
-            글쓰기
-          </button>
-        </span>
-      </div>
-
-      <div class="navigator">
+      <!-- <div class="navigator">
         <span>
           <ul class="pagination">
             <li class="page-item">
@@ -60,7 +48,8 @@
             </li>
           </ul>
         </span>
-      </div>
+      </div> -->
+
     </div>
   </main>
 </template>
@@ -70,7 +59,8 @@
 
 export default {
   data() {
-    return {};
+    return {
+    };
   },
   created() {},
 
@@ -108,9 +98,13 @@ h2 {
   height: 50px;
 }
 
+/* 여기서 시작 */
 .plan-list-list-container ul {
   padding: 0;
 }
+
+
+/* 여기서 끝 */
 
 .pagination {
   display: flex;

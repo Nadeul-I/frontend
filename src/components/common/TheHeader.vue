@@ -8,6 +8,7 @@
           <router-link :to="{ name: 'TripPlan' }">여행 계획</router-link>
           <!-- <li><a href="${root }/board/list?pgno=1&search=&word=">여행 후기</a></li> -->
           <a @click.prevent="onClickBoardReset()">자유 게시판</a>
+          <a @click.prevent="onClickPlanReset()">여행 게시판</a>
         </ul>
       </div>
       <div>
@@ -30,6 +31,7 @@ import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 
 const userStore = "userStore";
 const boardStore = "boardStore";
+const planStore = "planStore";
 
 export default {
   name: "TheHeader",
@@ -45,7 +47,8 @@ export default {
   methods:{
     ...mapActions(userStore, ["userLogout"]),
     ...mapMutations(boardStore, ["SET_BOARD_INIT"]),
-
+    ...mapMutations(planStore, ["SET_PLANNO"]),
+    
     async onClickLogout(){
       await this.userLogout(this.getUserId);
     },
@@ -54,6 +57,16 @@ export default {
       this.SET_BOARD_INIT();
       if(router.currentRoute.fullPath != '/board/list'){
         router.push('/board/list');
+      }
+      else{
+        router.go(0);
+      }
+    },
+
+    onClickPlanReset(){
+      this.SET_PLANNO(0);
+      if(router.currentRoute.fullPath != '/plan/list'){
+        router.push('/plan/list');
       }
       else{
         router.go(0);

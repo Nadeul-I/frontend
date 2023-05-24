@@ -43,8 +43,16 @@ const userStore = {
 
             sessionStorage.setItem("access-token", accessToken);
             sessionStorage.setItem("refresh-token", refreshToken);
-
+            
             router.go(-1);
+
+            setTimeout(() => {
+              if(router.currentRoute.fullPath == '/user/signup'){
+                console.log("!!!!!");
+                router.push({ name: "home" });
+              }
+            }, 1);
+          
           } else {
             commit("SET_USER_STATE", "");
             sessionStorage.removeItem("access-token");

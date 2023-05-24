@@ -1,5 +1,3 @@
-
-
 const boardStore = {
   namespaced: true,
   state: {
