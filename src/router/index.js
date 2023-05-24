@@ -66,7 +66,7 @@ const routes = [
       {
         path: 'search',
         name: 'RegionSearch',
-        beforeEnter: onlyAuthUser,
+        // beforeEnter: onlyAuthUser,
         component: () => import('@/components/region/RegionSearch')
       },
       {

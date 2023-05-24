@@ -22,7 +22,8 @@
             <div class="notice">
                 공지사항
             </div>
-            <hot-place @selectedData="getMapInfo"></hot-place>
+            <hot-place @selectedData="getMapInfo" v-if="!afterSearch"></hot-place>
+            <search-result  @selectedData="getMapInfo" :mapData="mapData" v-else ></search-result>
         </div>
         <div class="open-info">
             <div class="bar"/>
@@ -48,11 +49,13 @@
 import TheMap from '@/components/region/TheMap.vue';
 import HotPlace from '@/components/region/HotPlace.vue';
 import { sidoList, gugunList, regionSearch } from '@/api/region';
+import SearchResult from '@/components/region/SearchResult';
 
 export default {
     components:{
         TheMap,
         HotPlace,
+        SearchResult,
     },
     data(){
         return{
@@ -64,6 +67,7 @@ export default {
             gugunData: [],
             mapData:[],
             searchToggleBtn: true,
+            afterSearch: false,
             catList:[
                 {catNum:0, icon:'', style:'', name:'미선택'},
                 {catNum:12, icon:'plane', style:'#4d9aff', name: '관광지'},
@@ -116,6 +120,7 @@ export default {
             )
         },
         search(){
+            this.afterSearch = true;
             let sidoInfo = {
                 sidoCode : this.sidoCode,
                 gugunCode : this.gugunCode,
@@ -181,7 +186,9 @@ export default {
     padding: 20px;
     z-index:1;
     height:calc(100vh - 89px);
-    width:30%;
+    width:20%;
+    min-width: 290px;
+
 }
 .search-info form{
     display:flex;
@@ -277,6 +284,7 @@ input[type="text"]{
     justify-content: center;
     align-items: center;
     width:60%;
+    min-width: 850px;
     background-color: white;
     left:380px;
     padding: 10px;
