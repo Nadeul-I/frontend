@@ -55,6 +55,11 @@ const routes = [
         path: 'findpwd',
         name: 'FindPwd',
         component: () => import('@/components/user/FindPwd')
+      },
+      {
+        path: 'mypage',
+        name: 'MyPage',
+        component: () => import('@/components/user/MyPage')
       }
     ]
   },
@@ -134,7 +139,7 @@ const routes = [
         component: () => import('@/components/plan/PlanList')
       }
     ]
-  }
+  },
 ]
 
 const router = new VueRouter({

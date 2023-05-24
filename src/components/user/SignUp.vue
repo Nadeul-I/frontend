@@ -100,7 +100,7 @@ export default {
                     alert('에러 발생')
                 })
             }else{
-                alert('바꾸셈')
+                alert('회원 정보를 다시 입력해주세요.')
             }
             
         },
@@ -115,9 +115,9 @@ export default {
             IdCheck(userId, 
             ({data}) => {
                 if(data.message==='fail'){
-                    alert('이미 존재하는 아이디')
+                    alert('이미 존재하는 아이디입니다.')
                 }else {
-                    alert('사용할 수 있는 아이디')
+                    alert('사용할 수 있는 아이디입니다.')
                     this.dupCheckResult=true
                     this.checkedUserId = this.userId;
                 }}, 
