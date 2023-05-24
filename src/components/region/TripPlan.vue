@@ -221,8 +221,10 @@ export default {
 .search-info{
     padding: 20px;
     z-index:1;
-    height:calc(100vh - 130px);
-    width:30%;
+    height:calc(100vh - 130 px);
+    width:20%;
+    min-width: 290px;
+
 }
 .search-info form{
     display:flex;
@@ -319,8 +321,9 @@ input[type="text"]{
     justify-content: center;
     align-items: center;
     width:60%;
+    min-width: 850px;
     background-color: white;
-    left:380px;
+    left:350px;
     padding: 10px;
     top:100px;
     border: 1px solid rgba(0, 0, 0, .05);

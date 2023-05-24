@@ -26,10 +26,10 @@
             </div>
             <div class="hotplace-content-right">
                 <div class="hotplace-content-start">
-                    <input type="button" value="출발" @click="setStart(hotplace.sidoCode, hotplace.gugunCode, hotplace.contentTypeId, hotplace.title)"/>
+                    <input type="button" value="출발" @click="setStart(hotplace.sidoCode, hotplace.gugunCode, hotplace.contentTypeId, hotplace.title, hotplace.latitude, hotplace.longitude)"/>
                 </div>
                 <div class="hotplace-content-end">
-                    <input type="button" value="도착" @click="setDest(hotplace.sidoCode, hotplace.gugunCode, hotplace.contentTypeId, hotplace.title)"/>
+                    <input type="button" value="도착" @click="setDest(hotplace.sidoCode, hotplace.gugunCode, hotplace.contentTypeId, hotplace.title, hotplace.latitude, hotplace.longitude)"/>
                 </div>
             </div>
         </div>
@@ -68,22 +68,26 @@ export default {
             console.log(selectedData)
             this.$emit('selectedData', selectedData);
         },
-        setStart(sidoCode, gugunCode, category, keyword){
+        setStart(sidoCode, gugunCode, category, keyword, latitude, longitude){
             let startPoint = {
                 sidoCode,
                 gugunCode,
                 category,
                 keyword,
+                latitude,
+                longitude,
             }
             console.log(startPoint)
             this.$emit('startPoint', startPoint)
         },
-        setDest(sidoCode, gugunCode, category, keyword){
+        setDest(sidoCode, gugunCode, category, keyword, latitude, longitude){
             let endPoint = {
                 sidoCode,
                 gugunCode,
                 category,
                 keyword,
+                latitude,
+                longitude,
             }
             console.log(endPoint)
             this.$emit('endPoint', endPoint)
