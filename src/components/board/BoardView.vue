@@ -5,7 +5,7 @@
                 <div>
                     <h2>자유 게시판</h2>
                 </div>
-                <button class="board-view-list-btn btn btn-list" @click="listArticle()">≡ 목록가기</button>
+                <button class="board-view-list-btn btn btn-list" @click="listBoard()">≡ 목록가기</button>
             </div>
 
             <div class="board-view-title">
@@ -34,9 +34,10 @@
 
 <script>
 import { boardView, boardDelete } from '@/api/board';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapMutations} from 'vuex';
 
 const userStore = "userStore";
+const boardStore = "boardStore";
 
 export default {
     data(){
@@ -52,11 +53,20 @@ export default {
         ...mapGetters(userStore, ["getUserId"]),
     },
     methods:{
+        ...mapMutations[boardStore, ["SET_BOARD_INIT"]],
         listBoard(){
-            
+            this.$router.replace({name:'BoardList'});
         },
         deleteBoard(){
-            boardDelete(this.boardNo, () => this.$router.replace('/board'), (error) => {console.log(error)})
+            boardDelete(
+                this.boardNo, 
+                () => {
+                    this.SET_BOARD_INIT;
+                    this.$router.replace('/board');
+                }, 
+                (error) => {
+                    console.log(error);
+                });
         },
         modifyBoard(){
             this.$router.replace({ name: 'BoardModify', params : {boardNo : this.boardNo}});
@@ -76,12 +86,13 @@ export default {
   margin: auto;
 }
 
-.board-view-header{
-    margin:auto;
-    border-bottom: 3px solid #000;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
+.board-view-header {
+  margin: auto auto 2rem auto;
+  padding: 1rem;
+  border-bottom: 3px solid #000;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }
 
 .board-view-list-btn{
@@ -98,11 +109,11 @@ export default {
 
 .board-view-title div{
     font-size: 18px;
-    margin-bottom: 10px;
+    margin-bottom: 2rem;
 }
 
 .board-view-content{
-    margin: 1rem;
+    margin: 2rem;
 }
 
 .board-view-condition-container{

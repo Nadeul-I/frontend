@@ -14,11 +14,13 @@ async function logout(userId, success, fail){
 
 // 토큰 인증
 async function tokenCheck(token, success, fail) {
-    if(token){
+    if(token === true){
+        console.log("어세스토큰");
         console.log(sessionStorage.getItem("access-token"));
         api.defaults.headers["access-token"] = sessionStorage.getItem("access-token");
     }
     else{
+        console.log("리프레시토큰");
         console.log(sessionStorage.getItem("refresh-token"));
         api.defaults.headers["refresh-token"] = sessionStorage.getItem("refresh-token");
     }
