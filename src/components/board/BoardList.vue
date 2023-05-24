@@ -14,7 +14,7 @@
             aria-label="검색조건"
             v-model="search"
           >
-            <option value ="" selected>검색조건</option>
+            <option value="" selected>검색조건</option>
             <option value="boardTitle">제목</option>
             <option value="boardId">작성자</option>
           </select>
@@ -84,19 +84,30 @@
         <span>
           <ul class="pagination">
             <li class="page-item">
-              <a href="#" class="page-link">최신</a>
+              <a href="#" class="page-link" @click="onClickPage(1)">최신</a>
             </li>
-            <li class="page-item">
-              <a href="#" class="page-link">이전</a>
+            <li class="page-item" v-if="navigation.startRange">
+              <a href="#" class="page-link" @click="onClickPage(start)">이전</a>
             </li>
             <li class="page-item" v-for="i in indexList" :key="i.index">
-              <a href="#" class="page-link">{{ i.value }}</a>
+              <a
+                href="#"
+                class="page-link"
+                :class="{ select: i.index === navigation.currentPage }"
+                @click="onClickPage(i.index)"
+                >{{ i.value }}</a
+              >
+            </li>
+            <li class="page-item" v-if="navigation.endRange">
+              <a href="#" class="page-link" @click="onClickPage(end)">다음</a>
             </li>
             <li class="page-item">
-              <a href="#" class="page-link">다음</a>
-            </li>
-            <li class="page-item">
-              <a href="#" class="page-link">마지막</a>
+              <a
+                href="#"
+                class="page-link"
+                @click="onClickPage(navigation.totalPageCount)"
+                >마지막</a
+              >
             </li>
           </ul>
         </span>
@@ -116,7 +127,8 @@ export default {
     return {
       search: "",
       word: "",
-      pgno: 1,
+      start: null,
+      end: null,
       boards: [],
       navigation: "",
       indexList: [],
@@ -132,7 +144,11 @@ export default {
         data.boards.map((item) => {
           this.boards.push(item);
         });
-        for (let i = 1; i <= this.navigation.endPage; i++) {
+        for (
+          let i = this.navigation.startPage;
+          i <= this.navigation.endPage;
+          i++
+        ) {
           this.indexList.push({ index: i, value: i });
         }
       },
@@ -141,13 +157,24 @@ export default {
       }
     );
   },
-  computed:{
+  computed: {
     ...mapGetters(boardStore, ["getBoardSearch"]),
   },
+  watch: {
+    navigation: function () {
+      this.start = this.navigation.startPage - this.navigation.naviSize;
+      this.end = this.navigation.startPage + this.navigation.naviSize;
+    },
+  },
   methods: {
-    ...mapMutations(boardStore, ["SET_BOARD_STATE"]),
-    submitBoardSearch(){
-      this.SET_BOARD_STATE({"search":this.search, "word":this.word, "pgno":1});
+    ...mapMutations(boardStore, ["SET_BOARD_STATE", "SET_BOARD_PAGE"]),
+    submitBoardSearch() {
+      this.SET_BOARD_STATE({ search: this.search, word: this.word, pgno: 1 });
+      this.$router.go(0);
+    },
+    onClickPage(page) {
+      console.log(page);
+      this.SET_BOARD_PAGE(page);
       this.$router.go(0);
     },
     boardView(boardNo) {
@@ -157,8 +184,6 @@ export default {
     moveWrite() {
       this.$router.push({ name: "BoardWrite" });
     },
-
-    
   },
 };
 </script>
@@ -206,7 +231,7 @@ h2 {
   height: 50px;
 }
 
-#board-list-search-btn{
+#board-list-search-btn {
   cursor: pointer;
 }
 
@@ -282,6 +307,7 @@ h2 {
 .pagination {
   display: flex;
   justify-content: center;
+  margin-bottom: 2rem;
 }
 
 .page-link {
@@ -305,5 +331,9 @@ h2 {
 .page-link:active {
   position: relative;
   top: 1px;
+}
+
+.select{
+  color:#000;
 }
 </style>

@@ -44,7 +44,7 @@ const userStore = {
             sessionStorage.setItem("access-token", accessToken);
             sessionStorage.setItem("refresh-token", refreshToken);
 
-            router.push('/');
+            router.go(-1);
           } else {
             commit("SET_USER_STATE", "");
             sessionStorage.removeItem("access-token");

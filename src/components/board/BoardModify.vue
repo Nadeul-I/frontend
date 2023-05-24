@@ -5,7 +5,7 @@
         <div>
           <h2>자유 게시판</h2>
         </div>
-        <button class="board-modify-list-btn btn btn-list">≡목록가기</button>
+        <button class="board-modify-list-btn btn btn-list" @click="listBoard()">≡목록가기</button>
       </div>
 
       <form>
@@ -39,7 +39,7 @@
             </button>
           </span>
           <span>
-            <button type="button" class="board-modify-cancle-btn btn">
+            <button type="button" class="board-modify-cancle-btn btn" @click="viewBoard()">
               취소
             </button>
           </span>
@@ -74,15 +74,27 @@ export default {
     );
   },
   methods: {
+    listBoard() {
+      this.$router.replace({ name: "BoardList" });
+    },
+    viewBoard(){
+      this.$router.replace({ name: "BoardView", params: { boardNo: this.boardNo } });
+    },
     modifyArticle() {
       let boardInfo = {
         boardNo: this.boardNo,
         boardTitle: this.boardTitle,
         boardContent: this.boardContent,
       };
-      boardModify(boardInfo, this.$router.replace("/board"), () => {
+      boardModify(
+        boardInfo, 
+        () =>{
+          console.log(this.boardNo);
+        },
+        () => {
         console.log("수정 실패");
       });
+      this.$router.replace({ name: "BoardView", params: { boardNo: this.boardNo } });
     },
   },
 };
@@ -100,7 +112,8 @@ export default {
 }
 
 .board-modify-header {
-  margin: auto;
+  margin: auto auto 2rem auto;
+  padding: 1rem;
   border-bottom: 3px solid #000;
   display: flex;
   justify-content: space-around;

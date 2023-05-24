@@ -25,7 +25,7 @@ export default {
   },
   methods: {
     startRotation: function () {
-      this.timer = setInterval(this.next, 3000);
+      this.timer = setInterval(this.next, 5000);
     },
     next: function () {
       this.idx = (this.idx + 1) % this.images.length;

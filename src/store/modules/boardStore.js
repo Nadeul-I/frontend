@@ -25,6 +25,9 @@ const boardStore = {
       state.BoardSearch.search = boardSearch.search;
       state.BoardSearch.word = boardSearch.word;
       state.BoardSearch.pgno = boardSearch.pgno;
+    },
+    SET_BOARD_PAGE: (state, pgno) =>{
+      state.BoardSearch.pgno = pgno;
     }
   },
   actions: {
