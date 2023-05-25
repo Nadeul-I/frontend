@@ -4,6 +4,11 @@
 
 <script>
 import img from '@/assets/noimage.png'
+import { planWrite } from '@/api/plan';
+import { mapGetters } from "vuex";
+
+const userStore = "userStore";
+
 export default {
     name: "TheMap",
     props:{
@@ -111,6 +116,9 @@ export default {
             this.destPoint.sidoCode != null ? this.dest=true : this.dest=false
             if(this.dest && this.start && this.dest) this.find();
         }
+    },
+    computed: {
+        ...mapGetters(userStore, ["getUserId"]),
     },
     methods:{
         initMap() {
@@ -353,7 +361,22 @@ export default {
             return level;
         },
         saveInfo(value){
+            console.log(this.startPoint);
+            console.log(this.destPoint);
             console.log(value)
+            let newPlan = {
+                planTitle : value,
+                planStart : this.startPoint.contentId,
+                planEnd : this.destPoint.contentId,
+                planImg : this.destPoint.firstImage == '' ? this.startPoint.firstImage : this.destPoint.firstImage,
+                planId : this.getUserId,
+            }
+            planWrite(newPlan,
+            ()=> {
+                console.log('글 작성 성공')
+                },
+            ()=> {console.log('글 작성 실패')})
+            
         }
         
     }   

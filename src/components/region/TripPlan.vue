@@ -52,6 +52,7 @@
 import TheMap from '@/components/region/TheMap.vue';
 import { sidoList, gugunList, regionSearch } from '@/api/region';
 import SearchResult from '@/components/region/SearchResult';
+
 export default {
     components:{
         TheMap,
@@ -130,7 +131,7 @@ export default {
                 keyword : this.keyword == "" ? "0" : this.keyword
             }
             regionSearch(sidoInfo, 
-            ({data}) => {
+            ({data}) => { 
                 if(data.length==0){
                     alert('여행지 정보가 없습니다')
                     return
