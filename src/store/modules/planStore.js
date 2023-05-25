@@ -9,7 +9,7 @@ const planStore = {
       planEnd: 0,
       planImg: "",
       planId: "",
-    },
+    }, 
   },
   getters: {
     getPlanNo: function(state){
@@ -30,11 +30,11 @@ const planStore = {
       state.pgno = pgno;
     },
     SET_PLAN: (state, plan) =>{
-      state.planTitle = plan.planTitle;
-      state.planStart = plan.planStart;
-      state.planEnd = plan.planEnd;
-      state.planImg = plan.planImg;
-      state.planId = plan.planId;
+      state.Plan.planTitle = plan.planTitle;
+      state.Plan.planStart = plan.planStart;
+      state.Plan.planEnd = plan.planEnd;
+      state.Plan.planImg = plan.planImg;
+      state.Plan.planId = plan.planId;
       console.log(state);
     },
   },

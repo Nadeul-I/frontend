@@ -52,6 +52,9 @@
 import TheMap from '@/components/region/TheMap.vue';
 import { sidoList, gugunList, regionSearch } from '@/api/region';
 import SearchResult from '@/components/region/SearchResult';
+import { mapGetters } from 'vuex';
+
+const planStore = "planStore";
 
 export default {
     components:{
@@ -85,7 +88,13 @@ export default {
             ]
         }
     },
+    computed:{
+        ...mapGetters(planStore, ["getPlan", "getPlanNo"]),
+    },
     created(){
+        console.log(this.getPlan)
+        console.log(this.getPlanNo)
+        console.log(1234)
         if(this.$route.params.sidoCode){
             this.sidoCode= this.$route.params.sidoCode,
             this.changeGugun()
