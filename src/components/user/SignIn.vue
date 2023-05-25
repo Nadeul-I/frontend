@@ -51,7 +51,15 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+input[type="button"]:first-child {
+  border: 1px solid white;
+  background: #2691d9;
+  color: #d9f4fb;
+}
+input[type="button"]:first-child:hover {
+  border-color: #2691d9;
+  transition: 0.5s;
+}
 
 </style>
