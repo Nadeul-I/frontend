@@ -5,10 +5,10 @@
       <div>
         <ul class="header-inner">
           <router-link :to="{ name: 'RegionSearch' }">여행지 검색</router-link>
-          <router-link :to="{ name: 'TripPlan' }">여행 계획</router-link>
+          <a @click.prevent="onClickTripReset()">여행 계획</a>
           <!-- <li><a href="${root }/board/list?pgno=1&search=&word=">여행 후기</a></li> -->
-          <a @click.prevent="onClickBoardReset()">자유 게시판</a>
           <a @click.prevent="onClickPlanReset()">여행 게시판</a>
+          <a @click.prevent="onClickBoardReset()">자유 게시판</a>
         </ul>
       </div>
       <div>
@@ -47,7 +47,7 @@ export default {
   methods:{
     ...mapActions(userStore, ["userLogout"]),
     ...mapMutations(boardStore, ["SET_BOARD_INIT"]),
-    ...mapMutations(planStore, ["SET_PLANNO"]),
+    ...mapMutations(planStore, ["SET_PLANNO", "SET_PGNO"]),
     
     async onClickLogout(){
       await this.userLogout(this.getUserId);
@@ -65,6 +65,7 @@ export default {
 
     onClickPlanReset(){
       this.SET_PLANNO(0);
+      this.SET_PGNO(1);
       if(router.currentRoute.fullPath != '/plan/list'){
         router.push('/plan/list');
       }
@@ -72,6 +73,16 @@ export default {
         router.go(0);
       }
     },
+    onClickTripReset(){
+      this.SET_PLANNO(0);
+      this.SET_PGNO(1);
+      if(router.currentRoute.fullPath != '/region/TripPlan'){
+        router.push('/region/TripPlan');
+      }
+      else{
+        router.go(0);
+      }
+    }
   }
 };
 

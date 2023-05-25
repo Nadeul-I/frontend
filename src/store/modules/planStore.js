@@ -16,6 +16,9 @@ const planStore = {
     SET_PLANNO: (state, planNo) =>{
         state.planNo = planNo;
     },
+    SET_PGNO: (state, pgno) =>{
+      state.pgno = pgno;
+    }
   },
   actions:{
     
