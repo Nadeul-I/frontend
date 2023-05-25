@@ -60,7 +60,12 @@ const routes = [
         path: 'mypage',
         name: 'MyPage',
         component: () => import('@/components/user/MyPage')
-      }
+      },
+      {
+        path: 'withdraw',
+        name: 'SignWithdraw',
+        component: () => import('@/components/user/SignWithdraw')
+      },
     ]
   },
   {

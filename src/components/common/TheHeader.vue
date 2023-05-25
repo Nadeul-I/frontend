@@ -17,7 +17,7 @@
           <li><router-link :to="{ name: 'SignUp' }">회원가입</router-link></li>
         </ul>
         <ul class="header-inner" v-else>
-          <li><router-link to="/">마이페이지</router-link></li>
+          <li><router-link :to="{ name: 'MyPage' }">마이페이지</router-link></li>
           <li><a @click.prevent="onClickLogout()">로그아웃</a></li>
         </ul>
       </div>

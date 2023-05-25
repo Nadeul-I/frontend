@@ -18,8 +18,10 @@ async function SignUp(userInfo, success, fail) {
 }
 
 // 회원 탈퇴
-async function Withdraw(userId, success, fail){
-    await api.delete(`/user/withdraw/${userId}`).then(success).catch(fail);
+async function Withdraw(userInfo, success, fail) {
+    console.log(userInfo);
+    await api.post(`/user/withdraw`, JSON.stringify(userInfo)).then(success).catch(fail);
+    console.log("?")
 }
 
 // 회원 정보 수정
@@ -27,4 +29,8 @@ async function userModify(userInfo, success, fail){
     await api.put(`/user/modify`, JSON.stringify(userInfo)).then(success).catch(fail);
 }
 
-export {IdCheck, FindPwd, SignUp, Withdraw, userModify }
+// 마이 페이지 정보
+async function myPage(userId, success, fail) {
+    await api.get(`/user/mypage/${userId}`, JSON.stringify(userId)).then(success).catch(fail);
+}
+export {IdCheck, FindPwd, SignUp, Withdraw, userModify, myPage }

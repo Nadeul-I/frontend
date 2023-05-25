@@ -122,7 +122,7 @@ export default {
                     this.checkedUserId = this.userId;
                 }}, 
                 ()=>console.log('실패'))
-        }   ,
+        },
         signin(){
             this.$router.push('/')
         }
