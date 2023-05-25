@@ -26,13 +26,13 @@
             </div>
             <div class="hotplace-content-right">
                 <div class="hotplace-content-start" v-if="url=='plan'">
-                    <input type="button" value="출발" @click="setStart(hotplace.sidoCode, hotplace.gugunCode, hotplace.contentTypeId, hotplace.title, hotplace.latitude, hotplace.longitude)"/>
+                    <input type="button" value="출발" @click="setStart(hotplace.sidoCode, hotplace.gugunCode, hotplace.contentTypeId, hotplace.title, hotplace.latitude, hotplace.longitude, hotplace.contentId, hotplace.firstImage)"/>
                 </div>
                 <div class="hotplace-content-end" v-if="url=='plan'">
-                    <input type="button" value="도착" @click="setDest(hotplace.sidoCode, hotplace.gugunCode, hotplace.contentTypeId, hotplace.title, hotplace.latitude, hotplace.longitude)"/>
+                    <input type="button" value="도착" @click="setDest(hotplace.sidoCode, hotplace.gugunCode, hotplace.contentTypeId, hotplace.title, hotplace.latitude, hotplace.longitude, hotplace.contentId, hotplace.firstImage)"/>
                 </div>
                 <div class="hotplace-content-end" v-else>
-                    <input type="button" value="조회" @click="moveToSearch(hotplace.sidoCode, hotplace.gugunCode, hotplace.contentTypeId, hotplace.title, hotplace.latitude, hotplace.longitude)"/>
+                    <input type="button" value="조회" @click="moveToSearch(hotplace.sidoCode, hotplace.gugunCode, hotplace.contentTypeId, hotplace.title, hotplace.latitude, hotplace.longitude, hotplace.contentId, hotplace.firstImage)"/>
                 </div>
             </div>
         </div>
@@ -75,7 +75,7 @@ export default {
             console.log(selectedData)
             this.$emit('selectedData', selectedData);
         },
-        setStart(sidoCode, gugunCode, category, keyword, latitude, longitude){
+        setStart(sidoCode, gugunCode, category, keyword, latitude, longitude, contentId, firstImage){
             let startPoint = {
                 sidoCode,
                 gugunCode,
@@ -83,11 +83,13 @@ export default {
                 keyword,
                 latitude,
                 longitude,
+                contentId,
+                firstImage
             }
             console.log(startPoint)
             this.$emit('startPoint', startPoint)
         },
-        setDest(sidoCode, gugunCode, category, keyword, latitude, longitude){
+        setDest(sidoCode, gugunCode, category, keyword, latitude, longitude, contentId, firstImage){
             let endPoint = {
                 sidoCode,
                 gugunCode,
@@ -95,6 +97,8 @@ export default {
                 keyword,
                 latitude,
                 longitude,
+                contentId,
+                firstImage,
             }
             console.log(endPoint)
             this.$emit('endPoint', endPoint)
