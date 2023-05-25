@@ -110,6 +110,8 @@ export default {
       await planView(
         planNo,
         ({data}) =>{
+          console.log("!!!!!!!!!");
+          console.log(data);
           this.SET_PLANNO(planNo);
           this.SET_PLAN(data);
           this.$router.push({name:"TripPlan"});
