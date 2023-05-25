@@ -48,7 +48,9 @@ const userStore = {
 
             setTimeout(() => {
               if(router.currentRoute.fullPath == '/user/signup'){
-                console.log("!!!!!");
+                router.push({ name: "home" });
+              }
+              else if(router.currentRoute.fullPath == '/user/signin'){
                 router.push({ name: "home" });
               }
             }, 1);

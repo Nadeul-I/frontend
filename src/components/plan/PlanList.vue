@@ -5,20 +5,83 @@
         <div>
           <h2>여행 계획</h2>
         </div>
-        <button class="plan-list-write-btn btn btn-list">글 작성</button>
+        <button
+          class="plan-list-write-btn btn btn-list"
+          @click="onClickWrite()"
+        >
+          글 작성
+        </button>
       </div>
 
       <div class="plan-list-list-container">
-        <ul>
-          <li v-for="(plan, index) in plans" :key="index">
-            <div>
+        <ul class="plan-list-card-container">
+          <li
+            v-for="plan in plans"
+            :key="plan.planNo"
+            @click="onClickCard(plan.planNo)"
+          >
+            <img v-bind:src="plan.planImg" alt="image-load-fail" />
+            <div>{{ plan.planTitle }}</div>
+          </li>
 
-            </div>
-        </li>
+          <li @click="onClickCard()">
+            <img
+              src="@/assets/carousel4.jpg"
+              alt="image-load-fail"
+              class="book-img"
+            />
+            <div>Do it! 점프 투 파이썬</div>
+            <div>(18,800)원</div>
+          </li>
+          <li @click="onClickCard()">
+            <img
+              src="@/assets/carousel4.jpg"
+              alt="image-load-fail"
+              class="book-img"
+            />
+            <div>Do it! 점프 투 파이썬</div>
+            <div>(18,800)원</div>
+          </li>
+          <li @click="onClickCard()">
+            <img
+              src="@/assets/carousel4.jpg"
+              alt="image-load-fail"
+              class="book-img"
+            />
+            <div>Do it! 점프 투 파이썬</div>
+            <div>(18,800)원</div>
+          </li>
+          <li @click="onClickCard()">
+            <img
+              src="@/assets/carousel4.jpg"
+              alt="image-load-fail"
+              class="book-img"
+            />
+            <div>Do it! 점프 투 파이썬</div>
+            <div>(18,800)원</div>
+          </li>
+          <li @click="onClickCard()">
+            <img
+              src="@/assets/carousel4.jpg"
+              alt="image-load-fail"
+              class="book-img"
+            />
+            <div>Do it! 점프 투 파이썬</div>
+            <div>(18,800)원</div>
+          </li>
+          <li @click="onClickCard()">
+            <img
+              src="@/assets/carousel4.jpg"
+              alt="image-load-fail"
+              class="book-img"
+            />
+            <div>Do it! 점프 투 파이썬</div>
+            <div>(18,800)원</div>
+          </li>
         </ul>
       </div>
 
-      <!-- <div class="navigator">
+      <div class="navigator">
         <span>
           <ul class="pagination">
             <li class="page-item">
@@ -44,27 +107,58 @@
                 href="#"
                 class="page-link"
                 @click="onClickPage(navigation.totalPageCount)"
-                >마지막</a>
+                >마지막</a
+              >
             </li>
           </ul>
         </span>
-      </div> -->
-
+      </div>
     </div>
   </main>
 </template>
   
   <script>
-//import { planList } from "@/api/plan";
+import { planList } from "@/api/plan";
+import { mapGetters } from "vuex";
+
+const userStore = "userStore";
+const planStore = "planStore";
 
 export default {
   data() {
     return {
+      start: null,
+      end: null,
+      plans: [],
+      navigation: "",
+      indexList: [],
     };
   },
-  created() {},
-
-  methods: {},
+  created() {
+    planList({ planId: this.getUserId, pgno: this.getPgno }, ({ data }) => {
+      console.log(data);
+      this.navigation = data.navigation;
+      data.plans.map((item) => {
+        this.plans.push(item);
+      });
+      for (
+        let i = this.navigation.startPage;
+        i <= this.navigation.endPage;
+        i++
+      ) {
+        this.indexList.push({ index: i, value: i });
+      }
+    });
+  },
+  computed: {
+    ...mapGetters(userStore, ["getUserId"]),
+    ...mapGetters(planStore, ["getPlanNo", "getPgno"]),
+  },
+  methods: {
+    onClickWrite() {
+      this.$router.push({ name: "TripPlan" });
+    },
+  },
 };
 </script>
   
@@ -99,10 +193,28 @@ h2 {
 }
 
 /* 여기서 시작 */
-.plan-list-list-container ul {
-  padding: 0;
+.plan-list-card-container {
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
 }
 
+.plan-list-card-container li {
+  cursor: pointer;
+  margin: 2rem 0.5rem;
+  padding: 0.5rem;
+  border: 1px solid gray;
+  text-align: center;
+}
+
+.plan-list-card-container li:hover {
+  background-color: beige;
+}
+
+.plan-list-card-container img {
+  width: 14rem;
+  height: 21rem;
+}
 
 /* 여기서 끝 */
 

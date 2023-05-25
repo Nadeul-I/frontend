@@ -37,12 +37,6 @@
         </form>
       </div>
 
-      <!-- 
-      <div class="board-list-sort">
-        <a href="">최신순</a> <a href="">좋아요순</a>
-      </div>
-      -->
-
       <div class="board-list-list-container">
         <ul>
           <li>

@@ -4,6 +4,7 @@ const api = apiInstance();
 
 // 로그인 
 async function signIn(userInfo, success, fail) {
+    console.log(userInfo);
     await api.post(`/auth/signin`, JSON.stringify(userInfo)).then(success).catch(fail);
 }
 
