@@ -54,6 +54,7 @@ const userStore = {
             }, 1);
           
           } else {
+            alert('회원 정보가 일치하지 않습니다.')
             commit("SET_USER_STATE", "");
             sessionStorage.removeItem("access-token");
             sessionStorage.removeItem("refresh-token");
@@ -75,7 +76,8 @@ const userStore = {
         ({ data }) => {
           if (data === "fail") {
             console.log("유저정보 x");
-          }
+          } 
+          console.log(data);
           commit("SET_USER_STATE", "");
           sessionStorage.removeItem("access-token");
           sessionStorage.removeItem("refresh-token");

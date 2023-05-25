@@ -38,6 +38,7 @@ export default {
         ...mapActions(userStore, ["userLogin"]),
         async onClickLogin(){
             await this.userLogin({userId : this.userId, userPwd : this.userPwd});
+        
         },
 
         signup(){

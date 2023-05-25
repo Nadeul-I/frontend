@@ -18,7 +18,7 @@
 
 <script>
 import { Withdraw } from '@/api/user';
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 const userStore = "userStore";
 export default {
@@ -32,15 +32,17 @@ export default {
         ...mapGetters(userStore,["getUserId"])
     },
     methods:{
-        withdraw(){
+         ...mapActions(userStore, ["userLogout"]),
+         withdraw(){
             let userInfo = {
                 userId : this.getUserId,
-                userPwd : this.userPwd
+                userPwd : this.userPwd  
             }
             Withdraw(userInfo,
             (data) => {
-                if(data.message==='success'){
+                if(data.data.message==='success'){
                     alert('회원 탈퇴에 성공하였습니다.')
+                    this.userLogout(this.getUserId)
                     this.$router.replace('/')
                 }else{
                     alert('비밀번호가 일치하지 않습니다.')
