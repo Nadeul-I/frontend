@@ -20,8 +20,8 @@
             :key="plan.planNo"
             @click="onClickCard(plan.planNo)"
           >
-            <img v-bind:src="plan.planImg" alt="image-load-fail" />
-            <div>{{ plan.planTitle }}</div>
+            <img :src="plan.planImg == '' ? imgUrl : plan.planImg" />
+            <div class="plan-list-card-container-title">{{ plan.planTitle }}</div>
           </li>
         </ul>
       </div>
@@ -65,7 +65,7 @@
   <script>
 import { planList, planView } from "@/api/plan";
 import { mapGetters, mapMutations } from "vuex";
-
+import img from '@/assets/noimage.png'
 const userStore = "userStore";
 const planStore = "planStore";
 
@@ -77,6 +77,7 @@ export default {
       plans: [],
       navigation: "",
       indexList: [],
+      imgUrl : img,
     };
   },
   created() {
@@ -180,8 +181,11 @@ h2 {
 }
 
 .plan-list-card-container img {
-  width: 14rem;
-  height: 21rem;
+  width: 12rem;
+  height: 16rem;
+}
+.plan-list-card-container-title{
+  padding:10px 0;
 }
 
 /* 여기서 끝 */

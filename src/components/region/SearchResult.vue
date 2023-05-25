@@ -62,7 +62,7 @@ export default {
         }
     },
     created(){
-        if(window.location.pathname.includes('Plan')) this.url='plan';
+        if(window.location.pathname.includes('lan')) this.url='plan';
     },
     methods:{
         moveToSearch(sidoCode, gugunCode, category, keyword){
@@ -98,7 +98,7 @@ export default {
                 latitude,
                 longitude,
                 contentId,
-                firstImage,
+                firstImage
             }
             console.log(endPoint)
             this.$emit('endPoint', endPoint)

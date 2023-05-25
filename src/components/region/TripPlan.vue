@@ -95,6 +95,26 @@ export default {
         console.log(this.getPlan)
         console.log(this.getPlanNo)
         console.log(1234)
+        if(this.getPlanNo!=0){
+            let stPoint = {
+                contentId: this.getPlan.planStart,
+                latitude: this.getPlan.planStartLat,
+                longitude: this.getPlan.planStartLng,
+                keyword: this.getPlan.planStartTitle,
+                firstImage : this.getPlan.planImg,
+            }
+            let endPoint ={
+                contentId: this.getPlan.planEnd,
+                latitude: this.getPlan.planEndLat,
+                longitude: this.getPlan.planEndLng,
+                keyword: this.getPlan.planEndTitle,
+                firstImage : this.getPlan.planImg,
+            }
+            this.setStart(stPoint)
+            this.setDest(endPoint);
+
+            this.routeSearch()
+        }
         if(this.$route.params.sidoCode){
             this.sidoCode= this.$route.params.sidoCode,
             this.changeGugun()
@@ -141,16 +161,12 @@ export default {
             }
             regionSearch(sidoInfo, 
             ({data}) => { 
-                if(data.length==0){
-                    alert('여행지 정보가 없습니다')
-                    return
-                }else{
                     let newData = [];
                     data.map((item)=>{
                         newData.push(item);
                     })
                     this.mapData = newData;
-                }
+                
             })  
         },
         routeSearch(point){
@@ -163,16 +179,12 @@ export default {
             }
             regionSearch(sidoInfo, 
             ({data}) => {
-                if(data.length==0){
-                    alert('여행지 정보가 없습니다')
-                    return
-                }else{
                     let newData = [];
                     data.map((item)=>{
                         newData.push(item);
                     })
                     this.mapData = newData;
-                }
+                
             })
         },
         searchToggle(){

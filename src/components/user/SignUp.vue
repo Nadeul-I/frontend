@@ -82,6 +82,7 @@ export default {
             let cond = true;
             if(!this.dupCheckResult) cond = false;
             if(this.userId!=this.checkedUserId) cond = false;
+            if(!this.pwdCompare) cond = false;
             if(!this.emailValidation) cond = false;
             if(cond){
                 let userInfo = {

@@ -4,10 +4,11 @@
 
 <script>
 import img from '@/assets/noimage.png'
-import { planWrite } from '@/api/plan';
+import { planWrite, planDelete, planModify } from '@/api/plan';
 import { mapGetters } from "vuex";
 
 const userStore = "userStore";
+const planStore = "planStore";
 
 export default {
     name: "TheMap",
@@ -21,6 +22,8 @@ export default {
             map : null,
             openedInfo : [],
             searchLink: false,
+            tempStart: "",
+            tempDest: "",
             start: false,
             dest: false,
             clickLine: Object,
@@ -31,6 +34,7 @@ export default {
     },
     created(){
         if(this.$route.params) this.searchLink = true
+        
     },
     mounted(){
         if (!window.kakao || !window.kakao.maps) {
@@ -53,14 +57,14 @@ export default {
             // 이미 카카오맵 API가 로딩되어 있다면 바로 지도를 생성한다.
             this.initMap()
         }
+        
 
     },
     watch:{
         mapData: function(){
-            if(this.mapData.length==0){
-                alert("여행지 정보가 없습니다.")
-                return;
-            }
+            if(this.getPlanNo!=0){
+            this.find();
+        }   else{
             this.initMap();
         
             this.mapData.map((item)=>{
@@ -107,18 +111,22 @@ export default {
             })
                 
             });
+        }
         },
         startPoint: function(){
-            this.startPoint.sidoCode != null ? this.start=true : this.start=false
-            if(this.start && this.start && this.dest) this.find();
+            this.startPoint.keyword != null ? this.start=true : this.start=false
+            if(this.startPoint.keyword!=null&& this.destPoint.keyword!=null) this.find();
+            console.log(this.startPoint)
+            console.log('스타트')
         },
         destPoint: function(){
-            this.destPoint.sidoCode != null ? this.dest=true : this.dest=false
-            if(this.dest && this.start && this.dest) this.find();
+            this.destPoint.keyword != null ? this.dest=true : this.dest=false
+            if(this.startPoint.keyword!=null&& this.destPoint.keyword!=null) this.find();
         }
     },
     computed: {
         ...mapGetters(userStore, ["getUserId"]),
+        ...mapGetters(planStore, ["getPlan", "getPlanNo"])
     },
     methods:{
         initMap() {
@@ -227,7 +235,6 @@ export default {
             
             // 계산한 자전거 시간이 60분 보다 크면 시간으로 표출합니다
             if (bycicleTime > 60) {
-  
                 numberSpan3.appendChild(document.createTextNode(`${Math.floor(bycicleTime/60)}시간 `))
             }
             let numberSpan4 = document.createElement('span');
@@ -262,6 +269,7 @@ export default {
             let doboIcon = document.createElement('i');
             doboIcon.setAttribute('class', 'fa-solid fa-person-walking');
             doboIcon.setAttribute('style', 'color: #5c98ff;');
+            doboImg.appendChild(doboIcon);
 
             let doboDesc = document.createElement('div');
             doboDesc.setAttribute('class', 'doboDesc');
@@ -293,6 +301,9 @@ export default {
             let input1 = document.createElement('input');
             input1.setAttribute('type', 'text');
             input1.setAttribute('placeholder', '제목');
+            if(this.getPlanNo!=0){
+                input1.setAttribute('value', `${this.getPlan.planTitle}`)
+            }
             
 
             distanceInput.appendChild(input1);
@@ -312,16 +323,17 @@ export default {
             modifyBtn.setAttribute('type', 'button');
             modifyBtn.setAttribute('value', '수정');
             modifyBtn.onclick = () => {
-                this.saveInfo()
+                let value = input1.value;
+                this.modifyInfo(value);
             }
 
             let deleteBtn = document.createElement('input');
             deleteBtn.setAttribute('type', 'button');
             deleteBtn.setAttribute('value', '삭제');
             deleteBtn.onclick = () => {
-                this.saveInfo()
+                this.deleteInfo(this.getPlanNo)
             }
-            if(this.planNo==0){saveInfo.appendChild(saveBtn);}
+            if(this.getPlanNo==0){saveInfo.appendChild(saveBtn);}
             else{
                 saveInfo.appendChild(modifyBtn);
                 saveInfo.appendChild(deleteBtn);
@@ -366,17 +378,54 @@ export default {
             console.log(value)
             let newPlan = {
                 planTitle : value,
+                planStartTitle: this.startPoint.keyword,
+                planStartLat : this.startPoint.latitude,
+                planStartLng : this.startPoint.longitude,
                 planStart : this.startPoint.contentId,
+                planEndTitle: this.destPoint.keyword,
+                planEndLat : this.destPoint.latitude,
+                planEndLng : this.destPoint.longitude,
                 planEnd : this.destPoint.contentId,
                 planImg : this.destPoint.firstImage == '' ? this.startPoint.firstImage : this.destPoint.firstImage,
                 planId : this.getUserId,
             }
             planWrite(newPlan,
             ()=> {
-                console.log('글 작성 성공')
+                this.$router.push('/plan/list')
                 },
             ()=> {console.log('글 작성 실패')})
             
+        },modifyInfo(value){
+            let modifyPlan = {
+                planNo : this.getPlanNo,
+                planTitle : value,
+                planStartTitle: this.startPoint.keyword,
+                planStartLat : this.startPoint.latitude,
+                planStartLng : this.startPoint.longitude,
+                planStart : this.startPoint.contentId,
+                planEndTitle: this.destPoint.keyword,
+                planEndLat : this.destPoint.latitude,
+                planEndLng : this.destPoint.longitude,
+                planEnd : this.destPoint.contentId,
+                planImg : this.destPoint.firstImage == '' ? (this.startPoint.firstImage == ''? img : this.startPoint.firstImage) : this.destPoint.firstImage,
+                planId : this.getUserId,
+            }
+            console.log("?")
+            console.log(modifyPlan)
+            planModify(modifyPlan,
+            ()=> {this.$router.push('/plan/list')},
+            ()=> {console.log('수정 실패')})
+        },
+        deleteInfo(value){
+            console.log(this.startPoint);
+            console.log(this.destPoint);
+            planDelete(value, 
+            ()=>{
+                this.$router.push('/plan/list')
+            },
+            ()=>{
+                console.log('글 삭제 실패')
+            })
         }
         
     }   
