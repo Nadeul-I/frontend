@@ -87,6 +87,7 @@ const routes = [
       {
         path: 'tripplan',
         name: 'TripPlan',
+        beforeEnter: onlyAuthUser,
         component:() => import('@/components/region/TripPlan')
       },
       {

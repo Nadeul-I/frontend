@@ -23,61 +23,6 @@
             <img v-bind:src="plan.planImg" alt="image-load-fail" />
             <div>{{ plan.planTitle }}</div>
           </li>
-
-          <li @click="onClickCard()">
-            <img
-              src="@/assets/carousel4.jpg"
-              alt="image-load-fail"
-              class="book-img"
-            />
-            <div>Do it! 점프 투 파이썬</div>
-            <div>(18,800)원</div>
-          </li>
-          <li @click="onClickCard()">
-            <img
-              src="@/assets/carousel4.jpg"
-              alt="image-load-fail"
-              class="book-img"
-            />
-            <div>Do it! 점프 투 파이썬</div>
-            <div>(18,800)원</div>
-          </li>
-          <li @click="onClickCard()">
-            <img
-              src="@/assets/carousel4.jpg"
-              alt="image-load-fail"
-              class="book-img"
-            />
-            <div>Do it! 점프 투 파이썬</div>
-            <div>(18,800)원</div>
-          </li>
-          <li @click="onClickCard()">
-            <img
-              src="@/assets/carousel4.jpg"
-              alt="image-load-fail"
-              class="book-img"
-            />
-            <div>Do it! 점프 투 파이썬</div>
-            <div>(18,800)원</div>
-          </li>
-          <li @click="onClickCard()">
-            <img
-              src="@/assets/carousel4.jpg"
-              alt="image-load-fail"
-              class="book-img"
-            />
-            <div>Do it! 점프 투 파이썬</div>
-            <div>(18,800)원</div>
-          </li>
-          <li @click="onClickCard()">
-            <img
-              src="@/assets/carousel4.jpg"
-              alt="image-load-fail"
-              class="book-img"
-            />
-            <div>Do it! 점프 투 파이썬</div>
-            <div>(18,800)원</div>
-          </li>
         </ul>
       </div>
 
@@ -118,8 +63,8 @@
 </template>
   
   <script>
-import { planList } from "@/api/plan";
-import { mapGetters } from "vuex";
+import { planList, planView } from "@/api/plan";
+import { mapGetters, mapMutations } from "vuex";
 
 const userStore = "userStore";
 const planStore = "planStore";
@@ -155,8 +100,25 @@ export default {
     ...mapGetters(planStore, ["getPlanNo", "getPgno"]),
   },
   methods: {
+    ...mapMutations(planStore, ["SET_PGNO", "SET_PLANNO"]),
     onClickWrite() {
+      this.SET_PGNO(1);
+      this.SET_PLANNO(0);
       this.$router.push({ name: "TripPlan" });
+    },
+    async onClickCard(planNo){
+      this.SET_PLANNO(planNo);
+      await planView(
+        planNo,
+        ({data}) =>{
+          console.log(data);
+        }
+      )
+
+    },
+    onClickPage(pgno){
+      this.SET_PGNO(pgno);
+      this.$router.go(0);
     },
   },
 };

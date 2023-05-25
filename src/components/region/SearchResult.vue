@@ -62,7 +62,7 @@ export default {
         }
     },
     created(){
-        if(window.location.pathname.includes('plan')) this.url='plan';
+        if(window.location.pathname.includes('Plan')) this.url='plan';
     },
     methods:{
         moveToSearch(sidoCode, gugunCode, category, keyword){
