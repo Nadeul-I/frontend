@@ -14,7 +14,7 @@
                     <option v-for="gugun in gugunData" :key="gugun.gugunCode" :value="gugun.gugunCode" >{{gugun.gugunName}}</option>
                 </select>
                 <div id="search-form">
-                    <font-awesome-icon :icon="['fas', 'magnifying-glass']" style="color: #5c98ff;" @click="search()" />
+                    <font-awesome-icon :icon="['fas', 'magnifying-glass']" style="color: #5c98ff;" @click="search()" class="search-icon"/>
                     <input type="text" id="search-btn"  v-model="keyword" placeholder="키워드 입력"/>
                 </div>
                 </form> 
@@ -27,7 +27,7 @@
         </div>
         <div class="open-info">
             <div class="bar"/>
-            <span>
+            <span >
                 <font-awesome-icon :icon="['fas', 'caret-right']" style="color: #427bff;" v-if="searchToggleBtn" @click="searchToggle()" class="toggle-btn"/>
                 <font-awesome-icon :icon="['fas', 'caret-left']"  style="color: #427bff;" v-else @click="searchToggle()" class="toggle-btn"/>
             </span>
@@ -243,6 +243,7 @@ export default {
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
     padding:10px;
+    cursor:pointer;
 }
 
 input{
@@ -313,7 +314,9 @@ input[type="text"]{
     cursor:pointer;
     margin-right:2px;
 }
-
+.search-icon{
+    cursor:pointer;
+}
 hot-place{
     overflow:scroll;
 }

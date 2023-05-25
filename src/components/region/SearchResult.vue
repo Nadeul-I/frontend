@@ -25,11 +25,14 @@
                 </div>
             </div>
             <div class="hotplace-content-right">
-                <div class="hotplace-content-start">
+                <div class="hotplace-content-start" v-if="url=='plan'">
                     <input type="button" value="출발" @click="setStart(hotplace.sidoCode, hotplace.gugunCode, hotplace.contentTypeId, hotplace.title, hotplace.latitude, hotplace.longitude)"/>
                 </div>
-                <div class="hotplace-content-end">
+                <div class="hotplace-content-end" v-if="url=='plan'">
                     <input type="button" value="도착" @click="setDest(hotplace.sidoCode, hotplace.gugunCode, hotplace.contentTypeId, hotplace.title, hotplace.latitude, hotplace.longitude)"/>
+                </div>
+                <div class="hotplace-content-end" v-else>
+                    <input type="button" value="조회" @click="moveToSearch(hotplace.sidoCode, hotplace.gugunCode, hotplace.contentTypeId, hotplace.title, hotplace.latitude, hotplace.longitude)"/>
                 </div>
             </div>
         </div>
@@ -49,6 +52,7 @@ export default {
             searchData:{},
             searchList: [],
             img: '@/assets/noimage.png',
+            url: "",
         }
     },
     watch:{
@@ -56,6 +60,9 @@ export default {
             this.searchData = data;
             this.searchList = data;
         }
+    },
+    created(){
+        if(window.location.pathname.includes('plan')) this.url='plan';
     },
     methods:{
         moveToSearch(sidoCode, gugunCode, category, keyword){
@@ -182,4 +189,12 @@ div{
     display:flex;
     flex-direction:row;
 }
+.hotplace-content-right input[type="button"]{
+    color: #2691d9;
+    background: white;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+}
+
 </style>

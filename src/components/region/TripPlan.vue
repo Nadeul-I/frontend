@@ -14,11 +14,11 @@
                     <option v-for="gugun in gugunData" :key="gugun.gugunCode" :value="gugun.gugunCode" >{{gugun.gugunName}}</option>
                 </select>
                 <div id="search-form">
-                    <font-awesome-icon :icon="['fas', 'magnifying-glass']" style="color: #5c98ff;" @click="routeSearch('st')" />
+                    <font-awesome-icon :icon="['fas', 'magnifying-glass']" style="color: #5c98ff;" @click="routeSearch('st')" class="search-icon" />
                     <input type="text" id="search-btn"  v-model="start" placeholder="출발지 검색"/>
                 </div>
                 <div id="search-form">
-                    <font-awesome-icon :icon="['fas', 'magnifying-glass']" style="color: #5c98ff;" @click="routeSearch('dest')" />
+                    <font-awesome-icon :icon="['fas', 'magnifying-glass']" style="color: #5c98ff;" @click="routeSearch('dest')" class="search-icon" />
                     <input type="text" id="search-btn"  v-model="dest" placeholder="도착지 검색"/>
                 </div>
                 </form> 
@@ -30,7 +30,7 @@
         </div>
         <div class="open-info">
             <div class="bar"/>
-            <span>
+            <span >
                 <font-awesome-icon :icon="['fas', 'caret-right']" style="color: #427bff;" v-if="searchToggleBtn" @click="searchToggle()" class="toggle-btn"/>
                 <font-awesome-icon :icon="['fas', 'caret-left']"  style="color: #427bff;" v-else @click="searchToggle()" class="toggle-btn"/>
             </span>
@@ -279,6 +279,7 @@ export default {
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
     padding:10px;
+    cursor:pointer;
 }
 
 input{
@@ -323,7 +324,7 @@ input[type="text"]{
     width:60%;
     min-width: 850px;
     background-color: white;
-    left:350px;
+    left:380px;
     padding: 10px;
     top:100px;
     border: 1px solid rgba(0, 0, 0, .05);
@@ -347,7 +348,9 @@ input[type="text"]{
     cursor:pointer;
     margin-right:2px;
 }
-
+.search-icon{
+    cursor:pointer;
+}
 search-result{
     overflow:scroll;
 }

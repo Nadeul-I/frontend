@@ -19,9 +19,7 @@ async function SignUp(userInfo, success, fail) {
 
 // 회원 탈퇴
 async function Withdraw(userInfo, success, fail) {
-    console.log(userInfo);
     await api.post(`/user/withdraw`, JSON.stringify(userInfo)).then(success).catch(fail);
-    console.log("?")
 }
 
 // 회원 정보 수정

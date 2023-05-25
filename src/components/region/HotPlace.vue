@@ -26,11 +26,9 @@
             </div>
             <div class="hotplace-content-right">
                 <div class="hotplace-content-start">
-                    <input type="button" value="출발"/>
+                    <input type="button" value="조회"/>
                 </div>
-                <div class="hotplace-content-end">
-                    <input type="button" value="도착"/>
-                </div>
+                
             </div>
         </div>
 
@@ -114,6 +112,9 @@ div{
     padding:10px 10px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
+.hotplace-content-id{
+    cursor:pointer;
+}
 .hotplace::-webkit-scrollbar{
     width: 10px;
 }
@@ -160,5 +161,12 @@ div{
 .hotplace-content-right{
     display:flex;
     flex-direction:row;
+}
+.hotplace-content-right input[type="button"]{
+    color: #2691d9;
+    background: white;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
 }
 </style>

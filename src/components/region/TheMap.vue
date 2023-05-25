@@ -21,6 +21,7 @@ export default {
             clickLine: Object,
             distanceOverlay: Object,
             dots:[],
+            planNo: 0,
         }
     },
     created(){
@@ -56,7 +57,7 @@ export default {
                 return;
             }
             this.initMap();
-
+        
             this.mapData.map((item)=>{
             let mapLatLng = new kakao.maps.LatLng(item.latitude, item.longitude)
             this.map.setCenter(mapLatLng)
@@ -191,38 +192,140 @@ export default {
 
             // 도보의 시속은 평균 4km/h 이고 도보의 분속은 67m/min입니다
             var walkkTime = distance / 67 | 0;
-            var walkHour = '', walkMin = '';
-
+            let numberSpan = document.createElement('span');
+            numberSpan.setAttribute('class', 'number');
+            
             // 계산한 도보 시간이 60분 보다 크면 시간으로 표시합니다
-            if (walkkTime > 60) {
-                walkHour = '<span class="number">' + Math.floor(walkkTime / 60) + '</span>시간 '
+            if(walkkTime >= 2400){
+                    let day = Math.floor(walkkTime/2400);
+                    let hour = Math.floor(walkkTime%2400/60);
+                    // walkHour = '<span class="number">'+ day +'일 ' + hour + '시간</span> '
+                    numberSpan.appendChild(document.createTextNode(`${day}일 ${hour}시간 `))
             }
-            walkMin = '<span class="number">' + walkkTime % 60 + '</span>분'
+            else if (walkkTime > 60) {
+                // walkHour = '<span class="number">' + Math.floor(walkkTime / 60) + '</span>시간 '
+                numberSpan.appendChild(document.createTextNode(`${Math.floor(walkkTime/60)}시간 `))
+            }
+            let numberSpan2 = document.createElement('span');
+            numberSpan2.setAttribute('class','number');
+            numberSpan2.appendChild(document.createTextNode(`${walkkTime%60}분`));
+            // walkMin = '<span class="number">' + walkkTime % 60 + '</span>분'
 
             // 자전거의 평균 시속은 16km/h 이고 이것을 기준으로 자전거의 분속은 267m/min입니다
             var bycicleTime = distance / 227 | 0;
-            var bycicleHour = '', bycicleMin = '';
-
+            let numberSpan3 = document.createElement('span');
+            
+            numberSpan3.setAttribute('class','number');
+            
             // 계산한 자전거 시간이 60분 보다 크면 시간으로 표출합니다
             if (bycicleTime > 60) {
-                bycicleHour = '<span class="number">' + Math.floor(bycicleTime / 60) + '</span>시간 '
+  
+                numberSpan3.appendChild(document.createTextNode(`${Math.floor(bycicleTime/60)}시간 `))
             }
-            bycicleMin = '<span class="number">' + bycicleTime % 60 + '</span>분'
+            let numberSpan4 = document.createElement('span');
+            numberSpan4.setAttribute('class','number');
 
+            numberSpan4.appendChild(document.createTextNode(`${bycicleTime%60}분 `))
+            let dist = distance>=1000 ? (distance/1000).toFixed(1)+'km' : distance + 'm'
             // 거리와 도보 시간, 자전거 시간을 가지고 HTML Content를 만들어 리턴합니다
-            var content = '<div class="dotOverlay distanceInfo">';
-            content += '        <div class="title"><span class="label">총거리 : </span><span class="number">' + distance + '</span>m </div>';
-            content += '        <div class="dobo">';
-            content += '            <div class="doboImg"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M160 48a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zM126.5 199.3c-1 .4-1.9 .8-2.9 1.2l-8 3.5c-16.4 7.3-29 21.2-34.7 38.2l-2.6 7.8c-5.6 16.8-23.7 25.8-40.5 20.2s-25.8-23.7-20.2-40.5l2.6-7.8c11.4-34.1 36.6-61.9 69.4-76.5l8-3.5c20.8-9.2 43.3-14 66.1-14c44.6 0 84.8 26.8 101.9 67.9L281 232.7l21.4 10.7c15.8 7.9 22.2 27.1 14.3 42.9s-27.1 22.2-42.9 14.3L247 287.3c-10.3-5.2-18.4-13.8-22.8-24.5l-9.6-23-19.3 65.5 49.5 54c5.4 5.9 9.2 13 11.2 20.8l23 92.1c4.3 17.1-6.1 34.5-23.3 38.8s-34.5-6.1-38.8-23.3l-22-88.1-70.7-77.1c-14.8-16.1-20.3-38.6-14.7-59.7l16.9-63.5zM68.7 398l25-62.4c2.1 3 4.5 5.8 7 8.6l40.7 44.4-14.5 36.2c-2.4 6-6 11.5-10.6 16.1L54.6 502.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L68.7 398z"/></svg></div>';
-            content += '            <div class="doboDesc"><span class="label">도보 </span>' + walkHour + walkMin + '</div>'
-            content += '        </div>';
-            content += '        <div class="bicycle">';
-            content += '            <div class="bicycleImg"><span class="img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M312 32c-13.3 0-24 10.7-24 24s10.7 24 24 24h25.7l34.6 64H222.9l-27.4-38C191 99.7 183.7 96 176 96H120c-13.3 0-24 10.7-24 24s10.7 24 24 24h43.7l22.1 30.7-26.6 53.1c-10-2.5-20.5-3.8-31.2-3.8C57.3 224 0 281.3 0 352s57.3 128 128 128c65.3 0 119.1-48.9 127-112h49c8.5 0 16.3-4.5 20.7-11.8l84.8-143.5 21.7 40.1C402.4 276.3 384 312 384 352c0 70.7 57.3 128 128 128s128-57.3 128-128s-57.3-128-128-128c-13.5 0-26.5 2.1-38.7 6L375.4 48.8C369.8 38.4 359 32 347.2 32H312zM458.6 303.7l32.3 59.7c6.3 11.7 20.9 16 32.5 9.7s16-20.9 9.7-32.5l-32.3-59.7c3.6-.6 7.4-.9 11.2-.9c39.8 0 72 32.2 72 72s-32.2 72-72 72s-72-32.2-72-72c0-18.6 7-35.5 18.6-48.3zM133.2 368h65c-7.3 32.1-36 56-70.2 56c-39.8 0-72-32.2-72-72s32.2-72 72-72c1.7 0 3.4 .1 5.1 .2l-24.2 48.5c-9 18.1 4.1 39.4 24.3 39.4zm33.7-48l50.7-101.3 72.9 101.2-.1 .1H166.8zm90.6-128H365.9L317 274.8 257.4 192z"/></svg></span></div>'
-            content += '            <div class="bicycleDesc"><span class="label">자전거 </span>' + bycicleHour + bycicleMin + '</div>';
-            content += '        </div>';
-            content += '    </div>'
 
-            return content;
+
+            let content2 = document.createElement('div');
+            content2.setAttribute('class', 'dotOverlay distanceInfo');
+
+            let title = document.createElement('div');
+            title.setAttribute('class', 'title');
+            
+            let titleSpan = document.createElement('span');
+            titleSpan.setAttribute('class', 'label');
+            titleSpan.appendChild(document.createTextNode(`총거리 : `));
+            title.appendChild(titleSpan);
+
+            let titleSpan2 = document.createElement('span');
+            titleSpan2.setAttribute('class', 'number');
+            titleSpan2.appendChild(document.createTextNode(`${dist}`));
+            title.appendChild(titleSpan2);
+
+            let dobo = document.createElement('div');
+            dobo.setAttribute('class', 'dobo');
+            
+            let doboImg = document.createElement('div');
+            doboImg.setAttribute('class', 'doboImg');
+            let doboIcon = document.createElement('i');
+            doboIcon.setAttribute('class', 'fa-solid fa-person-walking');
+            doboIcon.setAttribute('style', 'color: #5c98ff;');
+
+            let doboDesc = document.createElement('div');
+            doboDesc.setAttribute('class', 'doboDesc');
+            doboDesc.appendChild(numberSpan)
+            doboDesc.appendChild(numberSpan2);
+
+            dobo.appendChild(doboImg);
+            dobo.appendChild(doboDesc);
+
+            let bicycle = document.createElement('div');
+            bicycle.setAttribute('class', 'bicycle');
+            
+            let bicycleImg = document.createElement('div');
+            bicycleImg.setAttribute('class', 'bicycleImg');
+            let bicycleIcon = document.createElement('i');
+            bicycleIcon.setAttribute('class', 'fa-solid fa-bicycle');
+
+            let bicycleDesc = document.createElement('div');
+            bicycleDesc.setAttribute('class', 'bicycleDesc');
+            bicycleDesc.appendChild(numberSpan3);
+            bicycleDesc.appendChild(numberSpan4);
+
+            bicycle.appendChild(bicycleImg);
+            bicycle.appendChild(bicycleDesc);
+
+            let distanceInput = document.createElement('div');
+            distanceInput.setAttribute('class', 'distance-input');
+
+            let input1 = document.createElement('input');
+            input1.setAttribute('type', 'text');
+            input1.setAttribute('placeholder', '제목');
+            
+
+            distanceInput.appendChild(input1);
+
+            let saveInfo = document.createElement('div');
+            saveInfo.setAttribute('class', 'saveInfo');
+
+            let saveBtn = document.createElement('input');
+            saveBtn.setAttribute('type', 'button');
+            saveBtn.setAttribute('value', '저장');
+            saveBtn.onclick = () => {
+                let userInput = input1.value;
+                this.saveInfo(userInput)
+            }
+
+            let modifyBtn = document.createElement('input');
+            modifyBtn.setAttribute('type', 'button');
+            modifyBtn.setAttribute('value', '수정');
+            modifyBtn.onclick = () => {
+                this.saveInfo()
+            }
+
+            let deleteBtn = document.createElement('input');
+            deleteBtn.setAttribute('type', 'button');
+            deleteBtn.setAttribute('value', '삭제');
+            deleteBtn.onclick = () => {
+                this.saveInfo()
+            }
+            if(this.planNo==0){saveInfo.appendChild(saveBtn);}
+            else{
+                saveInfo.appendChild(modifyBtn);
+                saveInfo.appendChild(deleteBtn);
+            }
+
+            content2.appendChild(title);
+            content2.appendChild(dobo);
+            content2.appendChild(bicycle);
+            content2.appendChild(distanceInput);
+            content2.appendChild(saveInfo);
+            
+            return content2;
         },
         showDistance(content, position) {
                 // 커스텀 오버레이를 생성하고 지도에 표시합니다
@@ -248,6 +351,9 @@ export default {
             else if(distance<=160000) level = 11;
             else level = 12;
             return level;
+        },
+        saveInfo(value){
+            console.log(value)
         }
         
     }   
@@ -299,8 +405,9 @@ export default {
 .distanceInfo{
     background-color:rgb(255, 255, 255);
     transform: translateX(-100%);
-    border: 3px solid red;
+    border: 1px solid #2691d9;
     border-radius: 5px;
+    padding:10px;
 }
 .distanceInfo .title{
     padding:10px;
@@ -314,7 +421,8 @@ export default {
     display:Flex;
     flex-direction: row;
     align-items:center;
-    justify-content:space-around;
+    justify-content:space-between;
+
 }
 .doboImg, .bicycleImg{
     width:20%;
@@ -322,4 +430,14 @@ export default {
 .doboImg svg{
     margin-left: 5px;
 }
+.distance-input{
+    display:flex;
+    justify-content: center;
+    flex-direction: column;
+}
+.distance-input input{
+    padding:3px;
+    margin-bottom: 5px;
+}
+
 </style>
