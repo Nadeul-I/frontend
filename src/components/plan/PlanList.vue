@@ -97,22 +97,26 @@ export default {
   },
   computed: {
     ...mapGetters(userStore, ["getUserId"]),
-    ...mapGetters(planStore, ["getPlanNo", "getPgno"]),
+    ...mapGetters(planStore, ["getPlanNo", "getPgno", "getPlan"]),
   },
   methods: {
-    ...mapMutations(planStore, ["SET_PGNO", "SET_PLANNO"]),
+    ...mapMutations(planStore, ["SET_PGNO", "SET_PLANNO", "SET_PLAN"]),
     onClickWrite() {
       this.SET_PGNO(1);
       this.SET_PLANNO(0);
       this.$router.push({ name: "TripPlan" });
     },
     async onClickCard(planNo){
-      this.SET_PLANNO(planNo);
       await planView(
         planNo,
         ({data}) =>{
-          console.log(data);
-        }
+          this.SET_PLANNO(planNo);
+          this.SET_PLAN(data);
+          this.$router.push({name:"TripPlan"});
+        },
+        (error)=>{
+          console.log(error);
+        },
       )
 
     },
