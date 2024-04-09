@@ -22,15 +22,13 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 400px;
+  width: 500px;
   background: white;
-  border: 1px solid black;
-  border-radius: 10px;
 }
 .center h1 {
   text-align: center;
-  padding: 20px 0 20px 0;
-  border-bottom: 1px solid silver;
+  font-size: 30px;
+  padding: 0 0 60px 0;
 }
 .center form {
   padding: 0 40px;
@@ -38,12 +36,8 @@ export default {
 }
 form .input {
   position: relative;
-  border-bottom: 1px solid #adadad;
+  border-bottom: 2px solid #adadad;
   margin: 30px 0;
-}
-form .input input:focus {
-  border-bottom: 1px solid #2691d9;
-  transition: border-bottom 0.3s ease-in-out;
 }
 .input input {
   width: 94%;
@@ -57,12 +51,13 @@ form .input input:focus {
 
 .input label {
   position: absolute;
-  top: 50%;
+  top: 40%;
   left: 5px;
   color: #adadad;
   transform: translateY(-50%);
   font-size: 16px;
   transition: 0.5s;
+  z-index: -1;
 }
 
 /* */
@@ -77,7 +72,6 @@ form .input input:focus {
   width: 100%;
 }
 .find {
-  margin: -5px 0 20px 5px;
   color: #a6a6a6;
   cursor: pointer;
 }
@@ -97,19 +91,19 @@ input[type="submit"] {
   background: #2691d9;
   color: #d9f4fb;
 }
-input[type="submit"]:hover {
+/* input[type="submit"]:hover {
   border-color: #2691d9;
   transition: 0.5s;
-}
+} */
 input[type="button"] {
   border: 1px solid white;
   background-color: white;
   color: #2691d9;
 }
-input[type="button"]:hover {
+/* input[type="button"]:hover {
   border-color: #2691d9;
   transition: 0.5s ease;
-}
+} */
 .signup_link {
   margin: 30px 0;
   text-align: center;
@@ -120,7 +114,7 @@ input[type="button"]:hover {
   color: #2691d9;
   text-decoration: none;
 }
-.signup_link a:hover {
+/* .signup_link a:hover {
   text-decoration: underline;
-}
+} */
 </style>
