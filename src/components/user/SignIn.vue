@@ -81,6 +81,9 @@ export default {
 </script>
 
 <style scoped>
+h1 {
+  color: rgba(111, 173, 207, 0.7);
+}
 .findArea {
   display: flex;
   margin: auto;
@@ -93,6 +96,13 @@ export default {
 .findArea > li {
   color: #a6a6a6;
   font-size: 14px;
+}
+.input > input {
+  border-bottom: 2px solid gray;
+  transition: border-bottom 0.5s;
+}
+.input > input:focus {
+  border-bottom: 2px solid rgba(111, 173, 207, 1);
 }
 .canLogin,
 .cannotLogin {

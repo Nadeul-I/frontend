@@ -13,8 +13,8 @@ export default {
 
 <style>
 .lump {
-  height: 91px;
-  background-color: black;
+  height: 90px;
+  background-color: rgba(111, 173, 207, 0.7);
 }
 
 .center {
@@ -36,7 +36,6 @@ export default {
 }
 form .input {
   position: relative;
-  border-bottom: 2px solid #adadad;
   margin: 30px 0;
 }
 .input input {

@@ -232,11 +232,21 @@ export default {
 </script>
 
 <style scoped>
+h1 {
+  color: rgba(111, 173, 207, 0.7);
+}
 .inputArea {
   margin-bottom: 15px;
 }
 .input {
   margin: 0;
+}
+.input > input {
+  border-bottom: 2px solid gray;
+  transition: border-bottom 0.5s;
+}
+.input > input:focus {
+  border-bottom: 2px solid rgba(111, 173, 207, 1);
 }
 .eraseDesc {
   visibility: hidden;

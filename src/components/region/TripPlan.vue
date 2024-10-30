@@ -231,7 +231,7 @@ export default {
 }
 .lump{
     height:89px;
-    background-color:black;
+    background-color: rgba(111, 173, 207, 0.7)
 }
 .search{
     display: flex;

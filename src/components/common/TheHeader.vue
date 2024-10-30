@@ -17,7 +17,9 @@
           <li><router-link :to="{ name: 'SignUp' }">회원가입</router-link></li>
         </ul>
         <ul class="header-inner" v-else>
-          <li><router-link :to="{ name: 'MyPage' }">마이페이지</router-link></li>
+          <li>
+            <router-link :to="{ name: 'MyPage' }">마이페이지</router-link>
+          </li>
           <li><a @click.prevent="onClickLogout()">로그아웃</a></li>
         </ul>
       </div>
@@ -26,7 +28,7 @@
 </template>
 
 <script>
-import router from "@/router/index.js"
+import router from "@/router/index.js";
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 
 const userStore = "userStore";
@@ -44,46 +46,43 @@ export default {
     ...mapState(userStore, ["isLogin", "userId"]),
     ...mapGetters(userStore, ["getLoginState", "getUserId"]),
   },
-  methods:{
+  methods: {
     ...mapActions(userStore, ["userLogout"]),
     ...mapMutations(boardStore, ["SET_BOARD_INIT"]),
     ...mapMutations(planStore, ["SET_PLANNO", "SET_PGNO"]),
-    
-    async onClickLogout(){
+
+    async onClickLogout() {
       await this.userLogout(this.getUserId);
     },
 
-    onClickBoardReset(){
+    onClickBoardReset() {
       this.SET_BOARD_INIT();
-      if(router.currentRoute.fullPath != '/board/list'){
-        router.push('/board/list');
-      }
-      else{
+      if (router.currentRoute.fullPath != "/board/list") {
+        router.push("/board/list");
+      } else {
         router.go(0);
       }
     },
 
-    onClickPlanReset(){
+    onClickPlanReset() {
       this.SET_PLANNO(0);
       this.SET_PGNO(1);
-      if(router.currentRoute.fullPath != '/plan/list'){
-        router.push('/plan/list');
-      }
-      else{
+      if (router.currentRoute.fullPath != "/plan/list") {
+        router.push("/plan/list");
+      } else {
         router.go(0);
       }
     },
-    onClickTripReset(){
+    onClickTripReset() {
       this.SET_PLANNO(0);
       this.SET_PGNO(1);
-      if(router.currentRoute.fullPath != '/region/TripPlan'){
-        router.push('/region/TripPlan');
-      }
-      else{
+      if (router.currentRoute.fullPath != "/region/TripPlan") {
+        router.push("/region/TripPlan");
+      } else {
         router.go(0);
       }
-    }
-  }
+    },
+  },
 };
 
 window.onscroll = function () {
@@ -139,15 +138,15 @@ function navScroll() {
 }
 
 .header-container:hover {
-  border-bottom: 0.1px solid rgba(0, 0, 0, 0.3) !important;
-  background-color: black !important;
+  /* border-bottom: 0.1px solid rgba(0, 0, 0, 0.3) !important; */
+  background-color: rgba(111, 173, 207, 0.7) !important;
 }
 
 .header-container a:hover {
-  color: rgb(153, 0, 255);
+  color: #2691d9;
   transition: 0.4s;
 }
-a{
-  cursor:pointer;
+a {
+  cursor: pointer;
 }
 </style>
